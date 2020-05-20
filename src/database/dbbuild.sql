@@ -1,48 +1,33 @@
--- BEGIN;
 
--- DROP TABLE IF EXISTS quizquestions CASCADE;
--- DROP TABLE IF EXISTS useranswers CASCADE;
--- DROP TABLE IF EXISTS usersettings CASCADE;
--- DROP TABLE IF EXISTS auth CASCADE;
+BEGIN;
 
 
--- CREATE TABLE quizquestions (
---     id SERIAL PRIMARY KEY,
---     quizgroup VARCHAR(30) NOT NULL,
---     question VARCHAR(300) NOT NULL,
---     answer1 VARCHAR(300) NOT NULL,
---     answer2 INTEGER NOT NULL,
---     status VARCHAR(30) NOT NULL,
---     furtherinfo VARCHAR(400) 
--- );
+    DROP TABLE IF EXISTS userprofile
+    CASCADE;
+DROP TYPE IF EXISTS gendertype;
 
--- CREATE TABLE useranswers (
---     id SERIAL PRIMARY KEY,
---     userid VARCHAR(30) UNIQUE NOT NULL,
---     quizquestionsid VARCHAR(30) NOT NULL,
---     answer VARCHAR(300) NOT NULL,s
--- );
 
--- CREATE TABLE comments (
---     id SERIAL PRIMARY KEY,
---     message VARCHAR(300) NOT NULL,
---     userID INTEGER NOT NULL,
---     bountyID INTEGER NOT NULL,
---     dateposted DATE NOT NULL
--- );
+CREATE TYPE gendertype AS ENUM
+('male', 'female', 'other');
 
--- INSERT INTO bounties (name, picture,crimes,bounty,status,furtherinfo) VALUES
--- ('Jittery James Daniels', 'https://i.imgur.com/eaof9WM.png', 'Harassing Injuns out up on the north frontier', 500, 'At Large', 'Afraid of cactii'),
--- ('Snakey Jake', 'https://i.imgur.com/boaJaFA.png', 'Highway robbery out by Old Acre', 1000, 'At Large', 'Often confused with James'),
--- ('Mad-Eye Marwan', 'https://i.imgur.com/8NVpLaE.jpg', 'Rustling cattle outside of Nazareth', 2000, 'At Large', 'He likes to seduce the cattle by playing sweet country music on his old acoustic guitar');
+CREATE TABLE userprofile
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    gender gendertype NOT NULL,
+    status VARCHAR(100) NOT NULL,
+    bio VARCHAR(300) NOT NULL,
+    job VARCHAR(100) NOT NULL,
+    livingin VARCHAR(200) NOT NULL,
+    primaryphoto TEXT NOT NULL,
+    subphotos TEXT
+    [] NOT NULL
+    );
 
--- INSERT INTO users (name, username, password, admin, score) VALUES
--- ('admin', 'admin', '$2b$10$sa/8nHXaQ5ZAOLcNtWQMbe92NFC/9xSGKadWjl..x8kUsT.bvcNHi', true, 20), 
--- ('Mario', 'supermario', 'password1', FALSE, 20),
--- ('Luigi', 'luigiisbetter', 'password2', FALSE, 30);
+    INSERT INTO userprofile
+    VALUES
+        (1.0, 'James', 'male', 'Single', 'Learning web-dev in the blazing Haifa heat.', 'Web-Developer', 'Haifa', 'https://avatars2.githubusercontent.com/u/51966598?s=60&v=4', '{"https://avatars2.githubusercontent.com/u/51966598?s=60&v=4", "https://avatars2.githubusercontent.com/u/51966598?s=60&v=4", "https://avatars2.githubusercontent.com/u/51966598?s=60&v=4"}'),
+        (2.0, 'Moris', 'male', 'Single', 'Teaching web-dev', 'Web-Developer', 'Haifa', 'https://avatars0.githubusercontent.com/u/10247681?s=60&v=4', '{"https://avatars2.githubusercontent.com/u/51966598?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4"}'),
+        (3.0, 'hadi', 'male', 'Single', 'ARTIST ', 'COUCH DRIVER', 'Haifa', 'https://avatars0.githubusercontent.com/u/57487623?s=60&v=4', '{"https://avatars2.githubusercontent.com/u/51966598?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4"}');
 
--- INSERT INTO comments (message, userID, bountyID, dateposted) VALUES
--- ('Well gee partner, I will take that bounty', 1, 1, '04/05/2020'),
--- ('Oh I aint going up against that lunatic', 2, 2, '05/05/2020');
-
--- COMMIT;
+    COMMIT;
