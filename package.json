@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "start": "node src/api/index.js",
+    "dev": "nodemon src/api/index.js",
     "testRoutes": "NODE_ENV=test tape tests/router-test.js | tap-spec",
     "test": "npm run testdb & npm run testRoutes",
     "testdb": "NODE_ENV=test npm run resetdb && nodemon ./tests/db-test.js | tap-spec",
