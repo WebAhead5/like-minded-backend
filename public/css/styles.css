@@ -1,0 +1,62 @@
+root {
+    --color-red: #FF533D;
+    --color-navy: #0F1626;
+    --color-background: #D9D9D9;
+}
+
+body {
+    background: var(--color-background);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: #000000;
+    font-size: 17px;
+}
+
+div.header {
+    position: absolute;
+    width: 360px;
+    height: 48px;
+    left: calc(50% - 360px/2);
+    top: 0px;
+}
+
+.appname {
+    font-size: 25px;
+    line-height: 29px;
+    text-align: center;
+}
+
+.appmotto {
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+}
+
+button.login {
+    position: absolute;
+    width: 191px;
+    height: 31px;
+    left: 85px;
+    top: 422px;
+    background: var(--color-navy);
+    border-radius: 2px;
+}
+
+button.google {
+    position: absolute;
+    width: 192px;
+    height: 31px;
+    left: 84px;
+    top: 563px;
+    background: var(--color-red);
+    border-radius: 2px;
+}
+
+div.quizalert {
+    position: absolute;
+    width: 332px;
+    height: 51px;
+    left: 15px;
+    top: 429px;
+}
