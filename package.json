@@ -4,18 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/api/index.js",
-    "dev": "nodemon src/api/index.js",
-    "testRoutes": "NODE_ENV=test tape tests/router-test.js | tap-spec",
-    "test": "npm run testdb & npm run testRoutes",
-    "testdb": "NODE_ENV=test npm run resetdb && nodemon ./tests/db-test.js | tap-spec",
-    "resetdb": "RESETDB=true node src/database/dbbuild.js",
-    "coverage": "nyc npm run test"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "resetdb": "RESETDB=true node src/database/dbbuild.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.3",
-    "supertest": "^4.0.2",
-    "nyc": "^15.0.1",
     "tap-spec": "^5.0.0",
     "tape": "^5.0.0"
   },

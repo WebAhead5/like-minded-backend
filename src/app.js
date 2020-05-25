@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
-const router = require('./router')
+const mainRouter = require('./routers/main/router')
 
 
 
-app.use(router)
+app.use(mainRouter)
 //app.get('/', (req, res) => res.sendFile(path.join(__dirname, "/index.html")))
 
 
