@@ -32,7 +32,6 @@ exports.update = async (userId, fields)=>{
 }
 
 exports.delete = async (userId)=>{
-
     await db.query(`delete from userProfile where userId = $1`, [userId])
 
 }
