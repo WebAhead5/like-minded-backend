@@ -27,7 +27,7 @@ exports.update = async (userId, fields) => {
         throw Error("invalid field provided")
     }
     try {
-            let sqlCommand = `update userProfile set ${keys.map((key,index)=>`${key} = $${index+2}`).join(" , ")} where userid = $2  `;
+            let sqlCommand = `update userProfile set ${keys.map((key,index)=>`${key} = $${index+2}`).join(" , ")} where userid = $1  `;
             await db.query(sqlCommand, [userId, ...keys ])
 
     } catch (error) {
