@@ -40,8 +40,7 @@ CREATE TABLE userprofile
     job VARCHAR(100) ,
     livingin VARCHAR(200) ,
     primaryphoto TEXT ,
-    subphotos TEXT
-    []
+    subphotos TEXT[]
     );
 
     CREATE TABLE "messages"
@@ -127,7 +126,8 @@ CREATE TABLE userprofile
         answer INTEGER NOT NULL
     );
 
-    INSERT INTO useranswers (userId, quizQuestionsId, answer)
+    INSERT INTO useranswers
+        (userId, quizQuestionsId, answer)
     VALUES
         (1, 1, -1),
         (2, 1, 1);

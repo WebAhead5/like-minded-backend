@@ -6,9 +6,6 @@ const router = require("../app");
 const objects = require('./test-objects');
 const resetDatabase = require('../database/dbbuild');
 
-resetDatabase();
-
-
 //GET ROUTES
 test("route to homepage", t => {
     supertest(router)
@@ -65,10 +62,10 @@ test("route to post user profile info with invalid userId", t => {
     supertest(router)
         .post("/userProfile/gler")
         .send({firstname: "Kevin"})
-        .expect(200)
+        .expect(404)
         .expect("content-type", "application/json; charset=utf-8")
         .end((err, res) => {      
-            t.deepEquals(res.body.message,"user info updated successfully")
+            t.deepEquals(res.body.message,'Invalid params provided')
             t.error(err);
             t.end();
         });
