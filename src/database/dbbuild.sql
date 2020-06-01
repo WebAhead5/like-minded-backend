@@ -48,11 +48,11 @@ CREATE TYPE likeEnum AS ENUM
     );
 
     INSERT INTO "userRelationship" 
-    ("id","userId1", "userId2","user1-towards-user2", "user2-towards-user1")
+    ("userId1", "userId2","user1-towards-user2", "user2-towards-user1")
     VALUES
-    (0, 1, 2, 'like', 'like'),
-    (1,1,3,'like', 'none'),
-     (2,2,3,'like', 'block');
+    (1, 2, 'like', 'like'),
+    (1,3,'like', 'none'),
+    (2,3,'like', 'block');
 
     INSERT INTO userprofile
         (userId,firstName, lastName, gender, status, bio, job, livingin, primaryphoto, subphotos)

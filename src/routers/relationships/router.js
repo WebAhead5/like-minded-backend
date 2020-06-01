@@ -1,20 +1,30 @@
-const express = require('express');
-const router = require(express.Router());
-const relationshipQuery = require('../../model/relationships.model');
+const router = require('express').Router();
 
-//NOT REALLY CLEAR WHAT /ROUTE WE ARE USING FOR EACH REQUEST
-router.getExistingMatches('/relationship', async(req,res)=>{
-    let {userId} = req.params
-    let existingMatches = relationshipQuery.getExistingMatches(userId)
-    res.json({status:200, data:profile})
-})
+const matches = require('./routes/matches')
+const relationship = require('./routes/relationship')
+const relationshipStatuses = require('./routes/relationshipStatuses')
 
-router.getPotentialMatches('/relationship', async(req,res)=>{
-    let {userId} = req.params
-    let matches = relationshipQuery.getPotentialMatches(userId)
-    res.json({status:200 , data: profile})
-})
 
-//THERE ARE TWO MORE ROUTES TO GO IN HERE
+
+
+router.get('/relationship/matches',matches.get )
+
+
+router.route('/relationship')
+    .get(relationship.get)
+    .post(relationship.post)
+
+
+router.get('/relationshipStatuses',relationshipStatuses.get )
+
+
+
+
+module.exports = router;
+
+
+
+
+
 
 module.exports = router;
