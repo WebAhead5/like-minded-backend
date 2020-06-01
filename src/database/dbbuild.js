@@ -8,7 +8,7 @@ const sql = fs.readFileSync(sqlPath).toString();
 const runDbBuild = async () => await dbConnection.query(sql)
 
 if(process.env.RESETDB === 'true'){
-    runDbBuild()
+    runDbBuild().then()
 }
 
 module.exports = runDbBuild

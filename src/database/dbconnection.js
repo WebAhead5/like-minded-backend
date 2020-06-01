@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
     DATABASE_URL = process.env.TEST_DB_URL
 }
 
-if (!process.env.DATABASE_URL) {
+if (!DATABASE_URL) {
     throw new Error('DATABASE_URL must be set')
 }
 
