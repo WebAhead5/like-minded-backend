@@ -17,3 +17,11 @@ exports.userProfile = {
         'https://avatars2.githubusercontent.com/u/51966598?s=60&v=4'
     ]
 }
+
+exports.message1 = {
+    id: 1,
+    senderUserId: 1,
+    recipUserId: 2,
+    message: 'Hey there',
+    timeAndDate: "2020-05-01T12:07:35.000Z"
+}

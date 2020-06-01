@@ -2,8 +2,8 @@ let tape = require('tape')
 const _tape = require('tape-promise').default;
 tape = _tape(tape)
 
-const {getAllMatchesWith} = require('../model/relationships.model');
-const userProfileQueries = require('../model/userProfile.model');
+const {getAllMatchesWith} = require('../../model/relationships.model');
+const userProfileQueries = require('../../model/userProfile.model');
 
 tape("tape is working", t => {
     t.equals(1, 1, "one equals one");

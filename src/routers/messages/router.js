@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const messagesQueries = require('../../model/messages.model')
 
+// Get messages between userId and recipUserId
 router.get('/messages', async (req, res) => {
     //NEED TO DECIDE HOW TO GET THIS INFO
     let { userId, recipUserId } = req.params
