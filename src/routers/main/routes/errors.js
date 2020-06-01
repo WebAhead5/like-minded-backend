@@ -1,11 +1,13 @@
-exports.notFound = (req, res) => {
-    res.status(404).send("404 page Not found")
+const serverResponse = require("../../../tools/serverResponse")
 
+
+exports.notFound = (req, res) => {
+    serverResponse.sendError(res,{message: "page not found", status:404})
 
 }
 exports.serverError = function (err, req, res, next) {
-    console.error(err.stack)
-    res.status(500).send('Something broke!')
+
+    serverResponse.sendError(res,{message: err, status:500})
 }
 
 
