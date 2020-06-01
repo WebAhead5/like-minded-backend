@@ -35,13 +35,31 @@ CREATE TABLE userprofile
         "timeAndDate" TIMESTAMP
     );
 
+CREATE TYPE likeEnum AS ENUM
+('block', 'none', 'like');
+
+    CREATE TABLE "userRelationship"
+    (
+        "id" SERIAL PRIMARY KEY,
+        "userId1" INT,
+        "userId2" INT,
+        "user1-towards-user2" likeEnum,
+        "user2-towards-user1" likeEnum
+    );
+
+    INSERT INTO "userRelationship" 
+    ("id","userId1", "userId2","user1-towards-user2", "user2-towards-user1")
+    VALUES
+    (0, 1, 2, 'like', 'like'),
+    (1,1,3,'like', 'none'),
+     (2,2,3,'like', 'block');
+
     INSERT INTO userprofile
         (userId,firstName, lastName, gender, status, bio, job, livingin, primaryphoto, subphotos)
     VALUES
         (1, 'James', 'Daniels', 'male', 'Single', 'Learning web-dev in the blazing Haifa heat.', 'Web-Developer', 'Haifa', 'https://avatars2.githubusercontent.com/u/51966598?s=60&v=4', '{"https://avatars2.githubusercontent.com/u/51966598?s=60&v=4", "https://avatars2.githubusercontent.com/u/51966598?s=60&v=4", "https://avatars2.githubusercontent.com/u/51966598?s=60&v=4"}'),
         (2, 'Moris', 'Rafoul', 'male', 'Single', 'Teaching web-dev', 'Web-Developer', 'Haifa', 'https://avatars0.githubusercontent.com/u/10247681?s=60&v=4', '{"https://avatars2.githubusercontent.com/u/51966598?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4"}'),
         (3, 'hadi', 'Khalil', 'male', 'Single', 'ARTIST ', 'COUCH DRIVER', 'Haifa', 'https://avatars0.githubusercontent.com/u/57487623?s=60&v=4', '{"https://avatars2.githubusercontent.com/u/51966598?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4"}');
-
 
 
     INSERT INTO "messages"
@@ -55,18 +73,6 @@ CREATE TABLE userprofile
         (7.0, 3.0, 1.0, 'Have you ever been in a cockpit before?', '2020-05-01 13:08:18.644000'),
         (8.0, 3.0, 1.0, 'Have you ever seen a grown man naked?', '2020-05-01 13:08:19.565000'),
         (9.0, 3.0, 2.0, 'sup?', '2020-05-01 13:08:21.128000');
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     CREATE TABLE quizquestions

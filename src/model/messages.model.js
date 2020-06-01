@@ -27,3 +27,12 @@ exports.add = async (userId, recipUserId, message, timeAndDate) => {
     }
 
 }
+
+exports.delete = async(messageId)=>{
+    try {
+        db.query(`DELETE FROM messages WHERE id = $1` [messageId])
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}

@@ -17,3 +17,11 @@ router.post('/messages', async (req, res) => {
     // DO WE NEED TO RESPOND WITH ANYTHING?
     res.json({ status: 200, data: postedMessage })
 })
+
+router.delete('messages', async (req, res) => {
+    let messageId = req.params.id
+    let deletedMessage = await messagesQueries.delete(messageId);
+
+    // DO WE NEED TO RESPOND WITH ANYTHING?
+    res.json({ status: 200, data: postedMessage })
+})

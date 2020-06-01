@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/userProfile/:profile_id",async (req, res)=>{
     let profile = await userProfile.get(parseInt(req.params["profile_id"]))
-    res.json({status:200 , data: profile})
+
 
 })
 
