@@ -1,5 +1,6 @@
 const userProfile = require("../../model/userProfile.model")
 const express = require('express');
+const serverResponse = require("../../tools/serverResponse")
 const router = express.Router();
 
 //TODO: VALIDATION NEEDS TO BE ADDED
@@ -10,16 +11,18 @@ router.get("/userProfile/:profile_id",async (req, res)=>{
     console.log(req.params["profile_id"]);
     
     let profile = await userProfile.get(parseInt(req.params["profile_id"]))
-    res.json({status:200 , data: profile})
+
+    serverResponse.sendData(res, {data: profile})
+
 })
 
 router.post("/userProfile/:profile_id",async (req, res)=>{
+
     try {
-        let profile = await userProfile.update(parseInt(req.params["profile_id"]), req.body)
-        res.json({status:200 , data: profile, message:"user info updated successfully"})
+        await userProfile.update(parseInt(req.params["profile_id"]), req.body)
+        serverResponse.sendData(res, {message: "Everything rosey in userProfile post"})
     } catch (error) {
-        console.error();
-        throw error;
+        serverResponse.sendError(res, {message: error.message})
     }
 
 })
