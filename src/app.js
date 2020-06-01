@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const mainRouter = require('./routers/main/router')
-const usersRouter = require('./routers/users/router')
+const usersRouter = require('./routers/userProfile/router')
 const relationshipRouter = require('./routers/relationships/router')
 
 app.use(express.json())
