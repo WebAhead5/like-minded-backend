@@ -4,9 +4,21 @@ BEGIN;
 
     DROP TABLE IF EXISTS userprofile
     CASCADE;
+
+DROP TABLE IF EXISTS messages
+CASCADE;
+
+DROP TABLE IF EXISTS "userRelationship"
+CASCADE;
+
+
+
 DROP TYPE IF EXISTS gendertype;
+DROP TYPE IF EXISTS likeEnum;
 
 
+CREATE TYPE likeEnum AS ENUM
+('block', 'none', 'like');
 CREATE TYPE gendertype AS ENUM
 ('male', 'female', 'other');
 
@@ -35,8 +47,7 @@ CREATE TABLE userprofile
         "timeAndDate" TIMESTAMP
     );
 
-CREATE TYPE likeEnum AS ENUM
-('block', 'none', 'like');
+
 
     CREATE TABLE "userRelationship"
     (
@@ -47,12 +58,12 @@ CREATE TYPE likeEnum AS ENUM
         "user2-towards-user1" likeEnum
     );
 
-    INSERT INTO "userRelationship" 
-    ("userId1", "userId2","user1-towards-user2", "user2-towards-user1")
+    INSERT INTO "userRelationship"
+        ("userId1", "userId2","user1-towards-user2", "user2-towards-user1")
     VALUES
-    (1, 2, 'like', 'like'),
-    (1,3,'like', 'none'),
-    (2,3,'like', 'block');
+        (1, 2, 'like', 'like'),
+        (1, 3, 'like', 'none'),
+        (2, 3, 'like', 'block');
 
     INSERT INTO userprofile
         (userId,firstName, lastName, gender, status, bio, job, livingin, primaryphoto, subphotos)
@@ -105,12 +116,12 @@ CREATE TYPE likeEnum AS ENUM
     CREATE TABLE useranswers
     (
         id SERIAL PRIMARY KEY,
-        userid INTEGER NOT NULL,
-        quizquestionsid INTEGER NOT NULL,
+        userId INTEGER NOT NULL,
+        quizQuestionsId INTEGER NOT NULL,
         answer INTEGER NOT NULL
     );
 
-    INSERT INTO useranswers
+    INSERT INTO useranswers (userId, quizQuestionsId, answer)
     VALUES
         (1, 1, -1),
         (2, 1, 1);

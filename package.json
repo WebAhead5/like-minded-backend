@@ -6,18 +6,20 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "resetdb": "RESETDB=true node src/database/dbbuild.js"
+    "resetdb": "RESETDB=true node src/database/dbbuild.js",
+    "testDB": "NODE_ENV=test tape src/tests/db-test.js | tap-spec",
+    "testRoutes": "NODE_ENV=test tape src/tests/router-test.js | tap-spec"
   },
   "devDependencies": {
     "nodemon": "^2.0.3",
     "tap-spec": "^5.0.0",
-    "tape": "^5.0.0"
+    "tape": "^5.0.0",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "pg": "^8.2.1",
-    "serve-favicon": "^2.5.0"
+    "pg": "^8.2.1"
   },
   "author": "",
   "license": "ISC"

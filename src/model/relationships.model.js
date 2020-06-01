@@ -11,32 +11,6 @@ exports.getAllMatchesWith = async (userId) => {
     }
 }
 
-// Get relationships where user has selected none/block/like
-exports.getRelationshipWhereUserSelected = async (status, userId) => {
-    try {
-        let potentialMatches = await db.query(
-            `SELECT * FROM userRelationship WHERE ( "userId1" = $1 AND "user1-towards-user2" = $2)
-            OR ( "userId2" = $1 AND "user2-towards-user1" = $2)`, [userId, status])
-        return potentialMatches.rows
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-}
-
-// Get relationships where candidates have selected none/block/like
-exports.getRelationshipsWhereCandidateSelected = async (status, userId) => {
-    try {
-        let potentialMatches = await db.query(
-            `SELECT * FROM userRelationship WHERE ( "userId1" = $1 AND "user2-towards-user1" = $2)
-            OR ( "userId2" = $1 AND "user1-towards-user2" = $2)`, [userId, status])
-        return potentialMatches.rows
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
-}
-
 // Get the like/block/none status of user and candidate
 exports.getRelationshipStatusBetween = async (userId, candidateId) => {
     try {
@@ -68,18 +42,37 @@ exports.setRelationshipStatus = async (userId, candidateId, status) => {
                 [isUserOneFirst ? userId : candidateId,
                 !isUserOneFirst ? userId : candidateId,
                     candidateId, status]
-
             )
-
-
-
         }
         console.log(statusCheck);
     } catch (error) {
         console.error(error);
         throw error;
     }
+}
 
+// Get relationships where user has selected none/block/like
+exports.getRelationshipWhereUserSelected = async (status, userId) => {
+    try {
+        let potentialMatches = await db.query(
+            `SELECT * FROM userRelationship WHERE ( "userId1" = $1 AND "user1-towards-user2" = $2)
+            OR ( "userId2" = $1 AND "user2-towards-user1" = $2)`, [userId, status])
+        return potentialMatches.rows
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
 
-
+// Get relationships where candidates have selected none/block/like
+exports.getRelationshipsWhereCandidateSelected = async (status, userId) => {
+    try {
+        let potentialMatches = await db.query(
+            `SELECT * FROM userRelationship WHERE ( "userId1" = $1 AND "user2-towards-user1" = $2)
+            OR ( "userId2" = $1 AND "user1-towards-user2" = $2)`, [userId, status])
+        return potentialMatches.rows
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
