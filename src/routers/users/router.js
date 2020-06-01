@@ -14,8 +14,14 @@ router.get("/userProfile/:profile_id",async (req, res)=>{
 })
 
 router.post("/userProfile/:profile_id",async (req, res)=>{
-    let profile = await userProfile.update(parseInt(req.params["profile_id"]), req.body)
-    res.json({status:200 , data: profile})
+    try {
+        let profile = await userProfile.update(parseInt(req.params["profile_id"]), req.body)
+        res.json({status:200 , data: profile, message:"user info updated successfully"})
+    } catch (error) {
+        console.error();
+        throw error;
+    }
+
 })
 
 module.exports =  router;

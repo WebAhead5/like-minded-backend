@@ -12,9 +12,10 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.3",
+    "supertest": "^4.0.2",
     "tap-spec": "^5.0.0",
     "tape": "^5.0.0",
-    "supertest": "^4.0.2"
+    "tape-promise": "^4.0.0"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

@@ -11,6 +11,12 @@ CASCADE;
 DROP TABLE IF EXISTS "userRelationship"
 CASCADE;
 
+DROP TABLE IF EXISTS quizquestions
+CASCADE;
+
+DROP TABLE IF EXISTS useranswers
+CASCADE;
+
 
 
 DROP TYPE IF EXISTS gendertype;

@@ -1,6 +1,13 @@
-const test = require("tape");
+let tape = require('tape')
+const _tape = require('tape-promise').default;
+const test = _tape(tape)
 const supertest = require("supertest");
 const router = require("../app");
+const objects = require('./test-objects');
+const resetDatabase = require('../database/dbbuild');
+
+resetDatabase();
+
 
 //GET ROUTES
 test("route to homepage", t => {
@@ -27,14 +34,41 @@ test("route to get relationship matches with userId", t => {
 });
 
 
-test("route to get user profile info with userId", t => {
+test("route /userProfile to get user profile info with valid profile userId", t => {
     supertest(router)
         .get("/userProfile/1")
         .expect(200)
         .expect("content-type", "application/json; charset=utf-8")
-        .end((err, res) => {
-            console.log(res.body);
-            
+        .end((err, res) => {            
+            t.deepEquals(res.body.data, objects.userProfile)
+            t.error(err);
+            t.end();
+        });
+});
+
+test("route to post user profile info with valid userId", t => {
+    resetDatabase();
+    supertest(router)
+        .post("/userProfile/1")
+        .send({firstname: "Kevin"})
+        .expect(200)
+        .expect("content-type", "application/json; charset=utf-8")
+        .end((err, res) => {      
+            t.deepEquals(res.body.message,"user info updated successfully")
+            t.error(err);
+            t.end();
+        });
+});
+
+test("route to post user profile info with invalid userId", t => {
+    resetDatabase();
+    supertest(router)
+        .post("/userProfile/gler")
+        .send({firstname: "Kevin"})
+        .expect(200)
+        .expect("content-type", "application/json; charset=utf-8")
+        .end((err, res) => {      
+            t.deepEquals(res.body.message,"user info updated successfully")
             t.error(err);
             t.end();
         });
