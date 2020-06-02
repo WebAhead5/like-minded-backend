@@ -6,8 +6,10 @@ const router = require("../../app");
 const objects = require('../test-objects');
 const resetDatabase = require('../../database/dbbuild');
 
-//GET ROUTES
+///////////////////////// VALID INPUT TESTS //////////////////////////////////////////
+
 test("route to homepage", t => {
+    resetDatabase();
     supertest(router)
         .get("/")
         .expect(200)
@@ -17,21 +19,9 @@ test("route to homepage", t => {
             t.end();
         });
 });
-
-//TODO: Haven't done this testing yet
-test("route to get relationship matches with userId", t => {
-    supertest(router)
-        .get("/")
-        .expect(200)
-        .expect("content-type", "text/html; charset=utf-8")
-        .end((err, res) => {
-            t.error(err);
-            t.end();
-        });
-});
-
 
 test("route /userProfile to get user profile info with valid profile userId", t => {
+    resetDatabase();
     supertest(router)
         .get("/userProfile/1")
         .expect(200)
@@ -57,19 +47,33 @@ test("route to post user profile info with valid userId", t => {
         });
 });
 
-test("route to post user profile info with invalid userId", t => {
+test("route to delete user profile info with valid userId", t => {
     resetDatabase();
     supertest(router)
-        .post("/userProfile/gler")
-        .send({firstname: "Kevin"})
-        .expect(404)
+        .delete("/userProfile/1")
+        .expect(200)
         .expect("content-type", "application/json; charset=utf-8")
         .end((err, res) => {      
-            t.deepEquals(res.body.message,'Invalid params provided')
+            t.deepEquals(res.body.message,"user deleted successfully")
             t.error(err);
             t.end();
         });
 });
+
+test("route to delete user profile info with valid userId", t => {
+    resetDatabase();
+    supertest(router)
+        .delete("/userProfile/1")
+        .expect(200)
+        .expect("content-type", "application/json; charset=utf-8")
+        .end((err, res) => {      
+            t.deepEquals(res.body.message,"user deleted successfully")
+            t.error(err);
+            t.end();
+        });
+});
+
+/////////////////////////// INVALID INPUT TESTS /////////////////////////////////
 
 test("route to post user profile info with invalid userId", t => {
     resetDatabase();
@@ -84,3 +88,4 @@ test("route to post user profile info with invalid userId", t => {
             t.end();
         });
 });
+
