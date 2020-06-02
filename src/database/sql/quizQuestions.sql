@@ -5,12 +5,10 @@ BEGIN;
 DROP TABLE IF EXISTS quizquestions
     CASCADE;
 
-
-
 CREATE TABLE quizquestions
 (
     id SERIAL PRIMARY KEY,
-    quizgroup VARCHAR(30) NOT NULL,
+    title VARCHAR(30) NOT NULL,
     question VARCHAR(300) NOT NULL,
     answer1 VARCHAR(100) NOT NULL,
     answer2 VARCHAR(300) NOT NULL,
