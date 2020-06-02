@@ -2,9 +2,9 @@ let tape = require('tape')
 const _tape = require('tape-promise').default;
 const test = _tape(tape)
 const supertest = require("supertest");
-const router = require("../app");
-const objects = require('./test-objects');
-const resetDatabase = require('../database/dbbuild');
+const router = require("../../app");
+const objects = require('../test-objects');
+const resetDatabase = require('../../database/dbbuild');
 
 //GET ROUTES
 test("route to homepage", t => {
@@ -52,6 +52,20 @@ test("route to post user profile info with valid userId", t => {
         .expect("content-type", "application/json; charset=utf-8")
         .end((err, res) => {      
             t.deepEquals(res.body.message,"user info updated successfully")
+            t.error(err);
+            t.end();
+        });
+});
+
+test("route to post user profile info with invalid userId", t => {
+    resetDatabase();
+    supertest(router)
+        .post("/userProfile/gler")
+        .send({firstname: "Kevin"})
+        .expect(404)
+        .expect("content-type", "application/json; charset=utf-8")
+        .end((err, res) => {      
+            t.deepEquals(res.body.message,'Invalid params provided')
             t.error(err);
             t.end();
         });

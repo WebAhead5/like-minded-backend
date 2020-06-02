@@ -12,7 +12,6 @@ let sql = fs.readdirSync(sqlPath)
     .map(path=> fs.readFileSync(path).toString())
     .join("\n")
 
-
 const runDbBuild = async () => {
 
    await dbConnection.query(sql)

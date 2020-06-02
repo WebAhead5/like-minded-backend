@@ -1,15 +1,10 @@
 BEGIN;
 
-
 DROP TABLE IF EXISTS userRelationship
     CASCADE;
 
-
-DROP TYPE IF EXISTS likeEnum;
-
-
+DROP TYPE IF EXISTS likeEnum CASCADE;
 CREATE TYPE likeEnum AS ENUM ('block', 'none', 'like');
-
 
 CREATE TABLE userRelationship
 (
@@ -19,8 +14,6 @@ CREATE TABLE userRelationship
     "user1-towards-user2" likeEnum default 'none',
     "user2-towards-user1" likeEnum default 'none'
 );
-
-
 
 INSERT INTO userRelationship
 ("userId1", "userId2","user1-towards-user2", "user2-towards-user1")

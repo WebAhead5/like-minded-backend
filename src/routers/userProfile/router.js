@@ -7,26 +7,21 @@ const router = express.Router();
 
 
 // Get user profile with userId
-router.get("/userProfile/:profile_id",async (req, res)=>{
+router.get("/userProfile/:profile_id", async (req, res) => {
     console.log(req.params["profile_id"]);
-    
     let profile = await userProfile.get(parseInt(req.params["profile_id"]))
-
-    serverResponse.sendData(res, {data: profile})
-
+    serverResponse.sendData(res, { data: profile })
 })
 
-router.post("/userProfile/:profile_id",async (req, res)=>{
-    if(isNaN(req.params["profile_id"])) return  serverResponse.sendError(res, {message:"Invalid params provided"})
+router.post("/userProfile/:profile_id", async (req, res) => {
+    if (isNaN(req.params["profile_id"])) return serverResponse.sendError(res, { message: "Invalid params provided" })
     try {
         let integer = parseInt(req.params["profile_id"]);
-
         await userProfile.update(parseInt(req.params["profile_id"]), req.body)
-        serverResponse.sendData(res, {message: "user info updated successfully"})
+        serverResponse.sendData(res, { message: "user info updated successfully" })
     } catch (error) {
-        serverResponse.sendError(res, {message: error.message})
+        serverResponse.sendError(res, { message: error.message })
     }
-
 })
 
-module.exports =  router;
+module.exports = router;
