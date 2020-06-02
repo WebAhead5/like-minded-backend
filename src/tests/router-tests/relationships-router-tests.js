@@ -18,15 +18,3 @@ test("route to homepage", t => {
         });
 });
 
-//TODO: Haven't done this testing yet
-test("route to get all relationships where user and candidates like each other", t => {
-    supertest(router)
-        .get("/messages")
-        .send({userId: 1})
-        .expect(200)
-        .expect("content-type", "text/html; charset=utf-8")
-        .end((err, res) => {
-            t.error(err);
-            t.end();
-        });
-});
