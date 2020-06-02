@@ -1,4 +1,3 @@
-
 const db = require("../database/dbconnection")
 
 // Get user profile data from userId
@@ -7,7 +6,7 @@ exports.get = async (userId) => {
     try {
         result = await db.query("select * from userprofile where id = $1", [userId])
     } catch (e) {
-        console.error("userProfile.model.get",e)
+        console.error("userProfile.model.get", e)
         throw e;
     }
     if (result.rows.length === 0)
@@ -17,11 +16,24 @@ exports.get = async (userId) => {
 
 // Set user profile data with userId and updated fields.
 exports.update = async (userId, fields) => {
-    if (!fields)
-        return;
+    if (!fields) throw Error("No fields provided");
+    if (isNaN(userId)) throw Error("userId is not a number");
+
     let keys = Object.keys(fields)
-    for (let key of keys)
-        await db.query(`update userProfile set ${key} = $1 where userid = $2  `, [fields[key], userId])
+    let columnNames = [ "firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto"]
+    
+    if (keys.some(key =>!columnNames.includes(key.toLowerCase())
+    )) {
+        throw Error("invalid field provided")
+    }
+    try {
+            let sqlCommand = `update userProfile set ${keys.map((key,index)=>`${key} = $${index+2}`).join(" , ")} where userid = $1  `;
+            await db.query(sqlCommand, [userId, ...keys ])
+
+    } catch (error) {
+        throw error
+    }
+
 }
 
 // Delete user profile with userId
