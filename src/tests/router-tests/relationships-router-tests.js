@@ -18,3 +18,15 @@ test("route to homepage", t => {
         });
 });
 
+//TODO: Haven't done this testing yet
+test("route to get relationship matches with userId", t => {
+    supertest(router)
+        .get("/")
+        .expect(200)
+        .expect("content-type", "text/html; charset=utf-8")
+        .end((err, res) => {
+            t.error(err);
+            t.end();
+        });
+});
+
