@@ -14,7 +14,10 @@ create table sessions(
     "id" SERIAL PRIMARY KEY,
     "userId" TEXT,
     "password" TEXT,
-    "googleId" TEXT
+    "googleId" TEXT default ''
 );
+
+insert into auth (email, password ) values ('moris.rafol@gmail.com', '123');
+
 
 end;
