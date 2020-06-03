@@ -15,12 +15,13 @@ exports.get = async (req, res) => {
 
 // Set relationship status between user and candidate
 exports.post = async (req, res) => {
-    let { userOne, userTwo, status } = req.query;
-
-    if (!userOne || !userTwo)
+    let { candidateId } = req.params;
+    let {  userId, status } = req.body; 
+         userId =  req.userId || userId;//TODO: remove the "|| userId;
+    if (!userId || !candidateId)
         return res.json({ status: 404, message: "invalid params were provided" })
 
-    await setRelationshipStatus(userOne, userTwo, status);
+    let relationshipStatus = await setRelationshipStatus(userId, candidateId, status);
 
-    res.json({ status: 200, data: profile });
+    res.json({ status: 200, data: relationshipStatus });
 }

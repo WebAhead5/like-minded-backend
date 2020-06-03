@@ -14,8 +14,17 @@ exports.getAllMatchesWith = async (userId) => {
 // Get the like/block/none status of user and candidate
 exports.getRelationshipStatusBetween = async (userId, candidateId) => {
     try {
-        let relationshipStatus = await db.query('SELECT * FROM "userrelationship" WHERE ("userId1" = $1 AND "userId2" = $2 ) OR ("userId1" = $2 AND "userId2" = $1)', [userId, candidateId]);
-        return relationshipStatus.rows
+        let relationshipStatus = await db.query(`SELECT *  FROM "userrelationship" WHERE ("userId1" = $1 AND "userId2" = $2 ) OR ("userId1" = $2 AND "userId2" = $1)`, [userId, candidateId]);
+
+        let u1tu2 = relationshipStatus.rows[0]["user1-towards-user2"];
+        let u2tu1 = relationshipStatus.rows[0]["user2-towards-user1"];
+        let {userId2} = relationshipStatus.rows[0];
+        return {    
+            isMatch: u1tu2 === u2tu1 && u2tu1 === "like",
+            isBlock: u2tu1 === "block" || u1tu2 === "block",
+            theirSelection: userId2 == candidateId? u2tu1 : u1tu2,
+            yourSelection: userId2 == userId ? u2tu1 : u1tu2,
+    }
     } catch (error) {
         console.error(error);
         throw error;
@@ -56,7 +65,7 @@ exports.setRelationshipStatus = async (userId, candidateId, status) => {
 }
 
 // Get relationships where user has selected none/block/like
-exports.getRelationshipWhereUserSelected = async (status, userId) => {
+exports.getRelationshipWhereUserSelected = async (userId, status) => {
     try {
         let potentialMatches = await db.query(
             `SELECT * FROM userRelationship WHERE ( "userId1" = $1 AND "user1-towards-user2" = $2)
