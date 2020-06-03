@@ -30,6 +30,7 @@ exports.update = async (userId, fields) => {
 
     try {
         let sqlCommand = `update userProfile set ${keys.map((key, index) => `${key} = $${index + 2}`).join(" , ")} where userid = $1  `;
+        // update userProfile set firstname = $3, lastname = $4 where userid = $1 
         await db.query(sqlCommand, [userId, ...values])
         return { message: "userProfile updated successfully" }
     } catch (error) {

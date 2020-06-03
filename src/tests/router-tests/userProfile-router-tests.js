@@ -60,19 +60,6 @@ test("route to delete user profile info with valid userId", t => {
         });
 });
 
-test("route to delete user profile info with valid userId", t => {
-    resetDatabase();
-    supertest(router)
-        .delete("/userProfile/1")
-        .expect(200)
-        .expect("content-type", "application/json; charset=utf-8")
-        .end((err, res) => {      
-            t.deepEquals(res.body.message,"user deleted successfully")
-            t.error(err);
-            t.end();
-        });
-});
-
 /////////////////////////// INVALID INPUT TESTS /////////////////////////////////
 
 test("route to post user profile info with invalid userId", t => {
