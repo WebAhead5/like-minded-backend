@@ -12,9 +12,10 @@ create table auth (
 
 create table sessions(
     "id" SERIAL PRIMARY KEY,
-    "userId" TEXT,
-    "password" TEXT,
-    "googleId" TEXT default ''
+    "userId" int not null ,
+    "expires" timestamptz,
+    "hasLoggedOut" boolean,
+    "data" json
 );
 
 insert into auth (email, password ) values ('moris.rafol@gmail.com', '123');

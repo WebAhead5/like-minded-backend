@@ -1,4 +1,6 @@
 const dbConnection = require("../database/dbconnection");
+const userProfile = require("./userProfile.model");
+const userSettings = require("./userProfile.model");
 
 exports.validateCredentials = async ( email, password ) => {
 
@@ -29,3 +31,68 @@ exports.validateCredentials = async ( email, password ) => {
     }
 
 }
+
+exports.createSession = async (userId, durationInMinutes)=>{
+
+    checkUserIdType(userId)
+    await checkUserExists(userId)
+
+    let res = await dbConnection.query(`insert into sessions ("userId", "expires") values ($1,now() + $2 * interval '1 minutes') RETURNING *`,[userId,durationInMinutes])
+
+    return res.rows[0]
+
+
+}
+
+exports.endSession = async (sessionId)=>{
+
+    await dbConnection.query(`update sessions set "hasLoggedOut" = true where id = $1`,[sessionId])
+
+}
+
+exports.extendSession = async (sessionId, durationInMinutes)=>{
+
+    await dbConnection.query(`update sessions set "expires" = "expires" + $2 *  interval '1 minutes'   where id = $1`,[sessionId,durationInMinutes])
+
+
+}
+
+exports.clearExpiredSession= async  ()=>{
+
+    await dbConnection.query(`delete from sessions where expires >= now()`)
+
+}
+
+
+exports.getSessionInfo = async ( sessionId ) => {
+
+    await dbConnection.query(`select "userId",
+                                     expires,
+                                     "hasLoggedOut"                    as "loggedOut",
+                                     now() > expires                   as "hasExpired",
+                                     now() > expires OR "hasLoggedOut" as "hasEnded"
+                              from sessions 
+                              where id = $1`, [sessionId])
+
+}
+
+
+function checkUserIdType(userId) {
+    if(isNaN(userId))
+        throw new Error("invalid userId provided")
+}
+
+
+
+async function checkUserExists(userId) {
+
+    let res = await dbConnection.query("select * from auth where id = $1 ", [userId] )
+    if(res.rowCount !== 1)
+        throw new Error("no user exists with userId " + userId)
+
+}
+
+
+
+
+
