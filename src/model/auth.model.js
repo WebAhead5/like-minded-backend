@@ -44,6 +44,11 @@ exports.createSession = async (userId, durationInMinutes)=>{
 }
 exports.endSession = async (sessionId)=>{
 
+    let sessionInfo = await this.getSessionInfo(sessionId)
+
+    if(sessionInfo.hasEnded)
+        throw new Error("session has already been expired/ended")
+
     await dbConnection.query(`update sessions set "hasLoggedOut" = true where id = $1`,[sessionId])
 
 }
