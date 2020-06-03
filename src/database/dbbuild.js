@@ -18,7 +18,7 @@ const runDbBuild = async () => {
 }
 
 if(process.env.RESETDB === 'true'){
-    runDbBuild().then()
+    runDbBuild()
 }
 
 module.exports = runDbBuild
