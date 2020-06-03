@@ -36,6 +36,25 @@ tape('test userProfile.update with valid userId = 1', async t=> {
     t.end()
 })
 
+tape('test userProfile.delete with valid userId = 1', async t=> {
+    await resetDatabase();
+    let userId = 1
+    let response = await userProfileQueries.delete(userId)    
+    let actual = response
+    let expected = {message: "userProfile deleted successfully"}
+    t.deepEqual(actual, expected)
+    t.end()
+})
 
+tape('test userProfile.update with valid userId = 1', async t=> {
+    await resetDatabase();
+    let userId = 1
+    let fields = {"firstname": "Gary", "lastname": "Sideways", "gender": 'male'}
+    let response = await userProfileQueries.add(fields)    
+    let actual = response
+    let expected = {message: "userProfile created successfully"}
+    t.deepEqual(actual, expected)
+    t.end()
+})
 
 ////////////////// INVALID INPUT TESTS //////////////////////////////////
