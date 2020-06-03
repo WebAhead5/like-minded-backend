@@ -6,9 +6,11 @@ const serverRes = require("../../../tools/serverResponse")
 exports.get = async (req, res) => {
 
     let {sid} = req.cookies;
-    res.clearCookie("sid")
     if(!sid)
-        serverRes.sendError(res, {message:`no cookie called "sid" was provided`})
+        return serverRes.sendError(res, {message:`no cookie called "sid" was provided`})
+
+    res.clearCookie("sid")
+
     try {
         await auth.endSession(sid)
         serverRes.sendData(res,{message:"successfully logged out"})
