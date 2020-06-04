@@ -3,7 +3,7 @@ const _tape = require('tape-promise').default;
 tape = _tape(tape)
 const testObjects = require('../test-objects')
 const resetDatabase = require('../../database/dbbuild');
-
+const moment = require("moment")
 const messagesQueries = require('../../model/messages.model');
 
 tape("tape is working", t => {
@@ -15,29 +15,70 @@ tape('get all messages when userId=1 and otherUserId=2', async t => {
     resetDatabase();
     let userId = 1
     let otherUserId = 2
-    let queryResponse = await messagesQueries.get(userId, otherUserId)
-    let expected = testObjects.message1.message;
-    t.deepEqual(queryResponse[0].message, expected)
+    let count = 25
+    let offset = 25
+    let queryResponse = await messagesQueries.getChat(userId, otherUserId, count, offset)
+    let actual = queryResponse.map(x => {
+        let temp = x
+        temp.timeAndDate = moment(temp.timeAndDate)
+        temp.timeAndDate.set("millisecond", 0)
+        temp.timeAndDate = temp.timeAndDate.toString();
+        return temp;
+
+    });
+    let expected = testObjects.getChat.map(x => {
+        let temp = { ...x }
+        temp.timeAndDate = moment(temp.timeAndDate)
+        temp.timeAndDate.set("millisecond", 0)
+        temp.timeAndDate = temp.timeAndDate.toString();
+        return temp;
+    });
+    t.deepEqual(actual, expected)
     t.end()
 })
 
-tape('test messagesQueries.add where correct values provided', async t => {
+// tape('get all messages when userId=1 and otherUserId=2', async t => {
+//     resetDatabase();
+//     let userId = 1
+//     let otherUserId = 2
+//     let queryResponse = await messagesQueries.get(userId, otherUserId)
+//     let expected = testObjects.message1.message;
+//     t.deepEqual(queryResponse[0].message, expected)
+//     t.end()
+// })
+
+// tape('test messagesQueries.add where correct values provided', async t => {
+//     resetDatabase();
+//     let userId = 1
+//     let otherUserId = 2
+//     let message = "Yo Yo Yo this is a message from testing"
+//     let timeanddate = new Date()
+//     let queryResponse = await messagesQueries.add(userId, otherUserId, message, timeanddate)
+//     let expected = queryResponse;
+//     t.deepEqual(undefined, expected)
+//     t.end()
+// })
+
+// tape('test messagesQueries.delete where correct values provided', async t => {
+//     resetDatabase();
+//     let messageId = 1
+//     let queryResponse = await messagesQueries.delete(messageId)
+//     let expected = queryResponse;
+//     t.deepEqual(undefined, expected)
+//     t.end()
+// })
+
+
+
+
+
+tape('get all matcheing profiles  when userId=1 ', async t => {
     resetDatabase();
     let userId = 1
-    let otherUserId = 2
-    let message = "Yo Yo Yo this is a message from testing"
-    let timeanddate = new Date()
-    let queryResponse = await messagesQueries.add(userId, otherUserId, message, timeanddate)
-    let expected = queryResponse;
-    t.deepEqual(undefined, expected)
+    let queryResponse = await messagesQueries.getAllChatsWith(userId)
+    let actual = queryResponse;
+    console.log(actual)
+    let expected = "not sure"
+    t.deepEqual(actual, expected)
     t.end()
-})
-
-tape('test messagesQueries.delete where correct values provided', async t => {
-    resetDatabase();
-    let messageId = 1
-    let queryResponse = await messagesQueries.delete(messageId)
-    let expected = queryResponse;
-    t.deepEqual(undefined, expected)
-    t.end()
-})
+    })
