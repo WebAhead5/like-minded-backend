@@ -2,17 +2,18 @@ const { getRelationshipWhereUserSelected, getRelationshipsWhereCandidateSelected
 
 // Get relationship statuses for user and all candidates.
 exports.get = async (req, res) => {
-  let { selectedBy, selectedFor } = req.params
+  let { candidateId } = req.params
+  let { userId, status } = req.body
 
-  if ((!selectedBy && !selectedFor) || (selectedFor && selectedBy))
+  if ((!userId && !candidateId) || (candidateId && userId))
     return res.json({ status: 404, message: "invalid argument provided" })
 
   let result;
-  if (selectedBy)
-    result = await getRelationshipWhereUserSelected(parseInt(selectedBy))
+  if (userId)
+    result = await getRelationshipWhereUserSelected(parseInt(userId, status))
 
-  else if (selectedFor)
-    result = await getRelationshipsWhereCandidateSelected(parseInt(selectedFor))
+  else if (candidateId)
+    result = await getRelationshipsWhereCandidateSelected(parseInt(candidateId, status))
 
   res.json({ status: 200, data: result })
 }

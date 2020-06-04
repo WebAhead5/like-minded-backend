@@ -7,6 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (!DATABASE_URL) {
+
     throw new Error('DATABASE_URL must be set')
 }
 
