@@ -9,8 +9,6 @@ exports.get = async (userId) => {
 
     let result = await db.query("select * from userprofile where userId = $1", [userId])
 
-    if (result.rows.length <= 0)
-        throw new Error("user not found")
 
     result.rows[0].id = undefined;
 
@@ -35,7 +33,6 @@ exports.update = async (userId, fields) => {
     // update userProfile set firstname = $3, lastname = $4 where userid = $1
 
     await db.query(sqlCommand, [userId, ...keys.map(key=>fields[key])])
-    return { message: "userProfile updated successfully" }
 
 }
 
@@ -49,15 +46,14 @@ exports.delete = async (userId) => {
 }
 
 // Add user with userId and form information.
+// exports.add = async ({userId,firstname, lastname, gender, status, bio, job, livingin, primaryphoto}) => {
 exports.add = async (fields) => {
-
 
     if (!fields)
         throw Error("No fields provided");
 
-    requireObjectKeys(fields, ["firstname", "lastname", "gender"])
-    checkObjectKeysPartOfArr(fields,["firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto"])
-
+    requireObjectKeys(fields, ["userId","firstname", "lastname", "gender"])
+    checkObjectKeysPartOfArr(fields,["userId","firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto"])
 
     let keys = Object.keys(fields);
     let sqlCommand = `INSERT into userProfile ( ${keys.map((key) => `${key}`).join(" , ")} ) values ( ${keys.map((key, index) => `$${index + 1}`).join(" , ")} )`;
