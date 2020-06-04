@@ -4,7 +4,7 @@ const app = express();
 const cookieParser = require("cookie-parser")
 
 const homeRouter = require("./routers/main/routes/home.js")
-const {notFound,serverError} = require("./routers/main/routes/errors")
+const {notFound,serverError} = require("./routers/main/routes/home.js")
 
 
 
@@ -41,8 +41,8 @@ app.use(settingsRouter)
 
 //main router
 app.get("/", homeRouter.get)
-app.use(serverError)
 app.use(notFound)
+app.use(serverError)
 
 
 

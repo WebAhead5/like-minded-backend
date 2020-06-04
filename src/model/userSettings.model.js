@@ -11,16 +11,20 @@ exports.get = async (userId) => {
     }
     if (result.rows.length === 0)
         throw new Error("user not found")
+    result.rows[0].id = undefined;
     return result.rows[0];
 }
 
 // Set user Settings data with userId and updated fields.add( { interestedIn, maxDistance, ageMin, ageMax, agePrivate, userLocation } )
 exports.update = async (userId, fields) => {
-    console.log(userId, fields);
-    
 
-    if (!fields) throw Error("No fields provided");
-    if (isNaN(userId)) throw Error("userId is not a number");
+    if (!fields)
+        throw Error("No fields provided");
+
+    if (isNaN(userId))
+        throw Error("userId is not a number");
+
+
     //let exampleObject = { interestedIn: "male", maxDistance: 23, ageMin: 26, ageMax: 33, agePrivate: true, userLocation: "Haifa, Israel" }
     let keys = Object.keys(fields)
     let columnNames = ["interestedIn", "maxDistance", "ageMin", "ageMax", "agePrivate", "userLocation"]

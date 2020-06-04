@@ -1,5 +1,6 @@
 
 const dbConnection = require("../database/dbconnection");
+const {checkEmailStructure,checkUserExists,checkUserIdType} = require("./validators")
 const userProfile = require("./userProfile.model");
 const userSettings = require("./userProfile.model");
 
@@ -90,22 +91,6 @@ exports.getSessionInfo = async ( sessionId ) => {
 
     return sessionInfo.rows[0];
 }
-exports.deleteAccount = async (userId) =>{
-
-    await  dbConnection.query(` 
-    
-    delete from userprofile where userid = ${userId};
-    delete from usersettings where userid = ${userId};
-    delete from auth where id = ${userId};
-    delete from useranswers where userid = ${userId};
-    delete from userRelationship where "userId1" = ${userId} or "userId2" = ${userId};
-    delete from messages where "senderUserId" = ${userId} or "senderUserId" = ${userId};
-    delete from sessions where "userId" = ${userId};
-     `)
-
-
-
-}
 
 
 exports.currentUser = async (sessionID)=>{
@@ -114,31 +99,9 @@ exports.currentUser = async (sessionID)=>{
 }
 
 
-exports.getUserInfo = async ( sessionId ) =>{
+exports.getUserInfo = ( sessionId ) =>{
     //TODO: implement after the userProfile and userSettings queries are available
 }
-
-
-
-function checkUserIdType(userId) {
-    if(isNaN(userId))
-        throw new Error("invalid userId provided")
-}
-function checkUserExists(userId) {
-
-    (async function () {
-        let res = await dbConnection.query("select * from auth where id = $1 ", [userId])
-        if (res.rowCount !== 1)
-            throw new Error("no user exists with userId " + userId)
-    })();
-
-}
-function checkEmailStructure(email) {
-    if(!/^([a-zA-Z0-9]+[_.\-]?)+@([a-zA-Z0-9_\-]*\.?[a-zA-Z0-9_\-]{1,})+$/.test(email))
-        throw new Error("invalid email structure was provided");
-
-}
-
 
 
 
