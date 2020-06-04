@@ -17,14 +17,16 @@ CREATE TABLE userSettings
     maxDistance INT,
     ageMin INT,
     ageMax INT,
-    agePrivate BOOLEAN DEFAULT FALSE
+    agePrivate BOOLEAN DEFAULT FALSE,
+    userLocation VARCHAR(200)
+
 );
 
 INSERT INTO userSettings
-    (userId, interestedIn, MaxDistance,ageMin,ageMax,agePrivate)
+    (userId, interestedIn, maxDistance,ageMin,ageMax,agePrivate,userLocation)
 VALUES
-    (1, 'male', 10, 25, 35, FALSE),
-    (2, 'female', 13, 20, 29, TRUE),
-    (1, 'both', 2, 22, 31, FALSE);
+    (1, 'male', 10, 25, 35, FALSE,'Haifa, israel'),
+    (2, 'female', 13, 20, 29, TRUE,'Haifa, israel'),
+    (1, 'both', 2, 22, 31, FALSE,'Haifa, israel');
     
 END;
