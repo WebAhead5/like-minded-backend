@@ -10,10 +10,13 @@ const usersRouter = require('./routers/userProfile/router')
 const relationshipRouter = require('./routers/relationships/router')
 const messagesRouter = require('./routers/messages/router')
 const authRouter = require('./routers/auth/router')
+const loadLoggedInUserId = require('./routers/auth/middleware/loadLoggedInUserId')
 
 
 app.use(cookieParser())
 app.use(express.json())
+
+app.use(loadLoggedInUserId)
 
 app.use(authRouter)
 app.use(usersRouter)
