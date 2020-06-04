@@ -12,8 +12,8 @@ CREATE TABLE messages
     "senderUserId" INT,
     "recipUserId" INT,
     "message" VARCHAR(300),
-    "timeAndDate" TIMESTAMP
-);
+    "timeAndDate" TIMESTAMPTZ 
+    );
 
 
 
