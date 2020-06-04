@@ -1,3 +1,5 @@
+const dbConnection = require("../database/dbconnection")
+
 exports.checkUserIdType=(userId) =>{
 
     if(isNaN(userId))
@@ -25,7 +27,6 @@ exports.checkEmailStructure=(email)=> {
 
 }
 
-
 exports.checkObjectKeysPartOfArr=(object, keysArr = [])=> {
 
     let keys = Object.keys(object).map(x=>x.toLowerCase())
@@ -49,30 +50,33 @@ exports.requireObjectKeys=(object, keysArr = [])=> {
 
 }
 
-
 exports.validateUserSettingsFieldTypes=(obj)=>{
 
-  let objectKeys = Object.keys(obj);
+    (async function () {
+        let objectKeys = Object.keys(obj);
 
-  for( let key of objectKeys) {
-      let lowerCase = key.toLowerCase();
+        for (let key of objectKeys) {
+            let lowerCase = key.toLowerCase();
 
-      if (lowerCase === "userid")
-          exports.checkUserIdType(obj[key]);
+            if (lowerCase === "userid")
+                exports.checkUserIdType(obj[key]);
 
-      else if (lowerCase === "interestedin") {
-          //todo get column types from db
-      }
+            else if (lowerCase === "interestedin") {
+                let availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::interestedIn))::varchar")
+               availableTypes = availableTypes.rows.map(x=>x.toLowerCase());
+                if(!availableTypes.includes(obj[key]))
+                    throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" ` )
+            }
+            else if ((lowerCase === "maxdistance" || lowerCase === "maxage" || lowerCase === "minage") && isNaN(obj[objectKeys]))
+                throw new Error(`invalid field value - "${key}" must be a number `);
 
-      else if((lowerCase === "maxdistance" || lowerCase === "maxage" || lowerCase === "minage") && isNaN(obj[objectKeys]))
-              throw new Error(`invalid field value - "${key}" must be a number `);
+            else if (lowerCase === "ageprivate")
+                throw new Error(`invalid field value - "${key}" must be a boolean `);
 
-      else if(lowerCase === "ageprivate")
-          throw new Error(`invalid field value - "${key}" must be a boolean `);
+            else if (lowerCase === "userlocation" && typeof obj[key] !== "string")
+                throw new Error(`invalid field value - "${key}" must be a string `);
 
-      else if(lowerCase === "userlocation" && typeof obj[key] !== "string")
-          throw new Error(`invalid field value - "${key}" must be a string `);
-
-  }
+        }
+    })()
 }
 
