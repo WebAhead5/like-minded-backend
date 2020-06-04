@@ -4,12 +4,12 @@ const db = require("../database/dbconnection")
 exports.get = async (userId) => {
     let result;
     try {
-        result = await db.query("select * from userprofile where id = $1", [userId])
+        result = await db.query("select * from userprofile where userId = $1", [userId])
     } catch (e) {
         console.error("userProfile.model.get", e)
         throw e;
     }
-    if (result.rows.length === 0)
+    if (result.rows.length <= 0)
         throw new Error("user not found")
     return result.rows[0];
 }
