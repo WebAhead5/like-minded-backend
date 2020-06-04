@@ -90,13 +90,14 @@ exports.getSessionInfo = async ( sessionId ) => {
 
     return sessionInfo.rows[0];
 }
+
+
 exports.currentUser = async (sessionID)=>{
-
-}
-
-exports. register = ( {email , pass, firstName, lastName, gender} ) =>{
     //TODO: implement after the userProfile and userSettings queries are available
+
 }
+
+
 exports.getUserInfo = ( sessionId ) =>{
     //TODO: implement after the userProfile and userSettings queries are available
 }

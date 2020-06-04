@@ -8,7 +8,7 @@ exports.get = async (req,res)=>
 {
 
     try {
-        let result =  await auth.currentUser(req.body)
+        let result =  await auth.getUserInfo(req.sessionId)
         serverRes.sendData(res,result)
     }
     catch (e) {
