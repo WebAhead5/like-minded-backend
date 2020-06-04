@@ -18,7 +18,7 @@ app.use(express.json())
 
 app.use(loadLoggedInUserId)
 
-app.use(authRouter)
+app.all("/auth", authRouter)
 app.use(usersRouter)
 app.use(relationshipRouter)
 app.use(mainRouter)
