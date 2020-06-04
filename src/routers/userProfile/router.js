@@ -8,9 +8,12 @@ const router = express.Router();
 
 // Get user profile with userId
 router.get("/userProfile/:profile_id", async (req, res) => {
-    console.log(req.params["profile_id"]);
-    let profile = await userProfile.get(parseInt(req.params["profile_id"]))
-    serverResponse.sendData(res, { data: profile })
+    try {
+        let profile = await userProfile.get(parseInt(req.params["profile_id"]))
+        serverResponse.sendData(res, { data: profile })
+    } catch (error) {
+        serverResponse.sendError(res, { message: error.message })
+    }
 })
 
 // Set new profile information

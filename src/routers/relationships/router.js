@@ -6,6 +6,11 @@ const relationship = require('./routes/relationship')
 const relationshipStatuses = require('./routes/relationshipStatuses')
 const relationshipsModel = require('../../model/relationships.model')
 
+// Get and set relationship status between user and specified candidate
+router.route('/relationship/status/:candidateId')
+    .get(relationship.get)
+    .post(relationship.post);
+
 // Get relationship statuses for user and all candidates.
 router.get('/relationshipStatuses', relationshipStatuses.get)
 
@@ -13,20 +18,16 @@ router.get('/relationshipStatuses', relationshipStatuses.get)
 router.get('/relationship/matches', matches.get)
 
 router.get('/relationship/userSelection', async (req,res)=>{
-    let { userId, status } = req.body
+    let { status } = req.body
+    let { userId } = req.userId || req.body
     try {
-        let candidatesThatAreSelected = await relationshipsModel.getRelationshipWhereUserSelected(userId, status);
-        res.json({ status: 200, data: candidatesThatAreSelected })
+        let candidatesThatAreSelected = await relationshipsModel.getRelationshipWhereUserSelected(status, userId);
+        serverResponse.sendData(res, { data: candidatesThatAreSelected })
     } catch (error) {
-        console.error("relationship/userSelection",error);
-        throw error;
+        serverResponse.sendError(res, {message: error.message })
     }
 
 })
 
-// Get and set relationship status between user and candidate
-router.route('/relationship/status/:candidateId')
-    .get(relationship.get)
-    .post(relationship.post);
 
 module.exports = router;
