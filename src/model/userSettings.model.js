@@ -32,7 +32,7 @@ exports.update = async (userId, fields) => {
     try {
             let sqlCommand = `update userSettings set ${keys.map((key,index)=>`${key} = $${index+2}`).join(" , ")} where userid = $1  `;
             console.log(sqlCommand)
-            await db.query(sqlCommand, [userId, ...keys.map(key=>fields[key]) ])
+            await db.query(sqlCommand, [userId, ...q ])
 
     } catch (error) {
         throw error
