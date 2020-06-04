@@ -90,6 +90,22 @@ exports.getSessionInfo = async ( sessionId ) => {
 
     return sessionInfo.rows[0];
 }
+exports.deleteAccount = async (userId) =>{
+
+    await  dbConnection.query(` 
+    
+    delete from userprofile where userid = ${userId};
+    delete from usersettings where userid = ${userId};
+    delete from auth where id = ${userId};
+    delete from useranswers where userid = ${userId};
+    delete from userRelationship where "userId1" = ${userId} or "userId2" = ${userId};
+    delete from messages where "senderUserId" = ${userId} or "senderUserId" = ${userId};
+    delete from sessions where "userId" = ${userId};
+     `)
+
+
+
+}
 
 
 exports.currentUser = async (sessionID)=>{
@@ -98,7 +114,7 @@ exports.currentUser = async (sessionID)=>{
 }
 
 
-exports.getUserInfo = ( sessionId ) =>{
+exports.getUserInfo = async ( sessionId ) =>{
     //TODO: implement after the userProfile and userSettings queries are available
 }
 
