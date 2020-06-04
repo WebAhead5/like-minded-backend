@@ -6,6 +6,8 @@ exports.notFound = (req, res) => {
 
 }
 exports.serverError = function (err, req, res, next) {
+    // if (err.code == 'EBADCSRFTOKEN')
+        // return serverResponse.sendError(res,{message: 'csurf validation failed', status:500});
 
     serverResponse.sendError(res,{message: err, status:500})
 }

@@ -1,5 +1,3 @@
-
-
 const auth = require("../../../model/auth.model")
 const serverRes = require("../../../tools/serverResponse")
 
