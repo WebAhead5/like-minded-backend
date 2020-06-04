@@ -1,3 +1,4 @@
+
 const dbConnection = require("../database/dbconnection");
 const userProfile = require("./userProfile.model");
 const userSettings = require("./userProfile.model");
@@ -89,6 +90,17 @@ exports.getSessionInfo = async ( sessionId ) => {
 
     return sessionInfo.rows[0];
 }
+exports.currentUser = async (sessionID)=>{
+
+}
+
+exports. register = ( {email , pass, firstName, lastName, gender} ) =>{
+    //TODO: implement after the userProfile and userSettings queries are available
+}
+exports.getUserInfo = ( sessionId ) =>{
+    //TODO: implement after the userProfile and userSettings queries are available
+}
+
 
 
 function checkUserIdType(userId) {
