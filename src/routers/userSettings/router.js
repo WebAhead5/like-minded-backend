@@ -3,8 +3,6 @@ const express = require('express');
 const serverResponse = require("../../tools/serverResponse")
 const router = express.Router();
 
-//TODO: VALIDATION NEEDS TO BE ADDED
-
 
 // Get userSettings  with userId
 router.get("/userSettings/:userId", async (req, res) => {
@@ -23,12 +21,15 @@ router.get("/userSettings/:userId", async (req, res) => {
     
 })
 
-router.post("/userSettings/:userId", async (req, res) => {
+router.post("/userSettings", async (req, res) => {
 
-    if (isNaN(req.params["userId"])) return serverResponse.sendError(res, { message: "Invalid params provided" })
+    let {userId} = res
+    if(!userId)
+        return serverResponse.sendError(res, { message: "user must log in first" })
+
 
     try {
-        await userSettings.update(parseInt(req.params["userId"]), req.body)
+        await userSettings.update(userId, req.body)
         serverResponse.sendData(res, { message: "updated successfully" })
     } catch (error) {
         serverResponse.sendError(res, { message: error.message })
