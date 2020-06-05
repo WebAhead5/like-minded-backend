@@ -33,6 +33,8 @@ router.post("/userSettings/:userId", async (req, res) => {
     } catch (error) {
         serverResponse.sendError(res, { message: error.message })
     }
+
+
 })
 
 module.exports = router;
