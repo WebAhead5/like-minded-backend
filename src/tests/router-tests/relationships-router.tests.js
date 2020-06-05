@@ -2,12 +2,12 @@ let tape = require('tape')
 const _tape = require('tape-promise').default;
 const test = _tape(tape)
 const supertest = require("supertest");
-const router = require("../../app");
+const app = require("../../app");
 const testObjects = require('../test-objects');
 const resetDatabase = require('../../database/dbbuild');
 
 test("route to homepage", t => {
-    supertest(router)
+    supertest(app)
         .get("/")
         .expect(200)
         .expect("content-type", "text/html; charset=utf-8")
@@ -20,7 +20,7 @@ test("route to homepage", t => {
 //////////////////////////////// VALID INPUT TESTING //////////////////////////////////////
 
 test("route to get relationship matches with userId", t => {
-    supertest(router)
+    supertest(app)
         .get('/relationship/status/2')
         .send({ userId: 1 })
         .expect(200)
@@ -35,7 +35,7 @@ test("route to get relationship matches with userId", t => {
 });
 
 test("route to post relationship matches with userId", t => {
-    supertest(router)
+    supertest(app)
         .post('/relationship/status/2')
         .send({ userId: 1, status: 'like' })
         .expect(200)
@@ -50,7 +50,7 @@ test("route to post relationship matches with userId", t => {
 });
 
 test("route to get /relationship/userSelection/ relationship matches with valid userId and status", t => {
-    supertest(router)
+    supertest(app)
         .get('/relationship/userSelection')
         .send({ userId: 1, status: 'like' })
         .expect(200)
@@ -65,7 +65,7 @@ test("route to get /relationship/userSelection/ relationship matches with valid 
 });
 
 // test("route to get /relationship/userSelection/ relationship matches with valid userId and status", t => {
-//     supertest(router)
+//     supertest(app)
 //         .get('/relationship/userSelection')
 //         .send({ userId: 1, status: 'like' })
 //         .expect(200)
