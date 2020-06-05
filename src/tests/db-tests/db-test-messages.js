@@ -12,31 +12,30 @@ tape("tape is working", t => {
 });
 
 tape('get all messages when userId=1 and otherUserId=2', async t => {
-    resetDatabase();
+    await resetDatabase();
     let userId = 1
     let otherUserId = 2
     let count = 25
     let offset = 25
     let queryResponse = await messagesQueries.getChat(userId, otherUserId, count, offset)
     let actual = queryResponse.map(x => {
-        let temp = x
-        temp.timeAndDate = moment(temp.timeAndDate)
-        temp.timeAndDate.set("millisecond", 0)
-        temp.timeAndDate = temp.timeAndDate.toString();
+        let temp = { ...x }
+        temp.timeAndDate = getDateWithoutMS(temp.timeAndDate)
         return temp;
-
     });
     let expected = testObjects.getChat.map(x => {
         let temp = { ...x }
-        temp.timeAndDate = moment(temp.timeAndDate)
-        temp.timeAndDate.set("millisecond", 0)
-        temp.timeAndDate = temp.timeAndDate.toString();
+        temp.timeAndDate = getDateWithoutMS(temp.timeAndDate)
         return temp;
     });
     t.deepEqual(actual, expected)
     t.end()
 })
-
+function getDateWithoutMS(timeAndDate) {
+    let temp = moment(timeAndDate)
+    temp.set("millisecond", 0)
+    return temp.toString();
+}
 // tape('get all messages when userId=1 and otherUserId=2', async t => {
 //     resetDatabase();
 //     let userId = 1
@@ -73,12 +72,48 @@ tape('get all messages when userId=1 and otherUserId=2', async t => {
 
 
 tape('get all matcheing profiles  when userId=1 ', async t => {
-    resetDatabase();
+    await resetDatabase();
     let userId = 1
-    let queryResponse = await messagesQueries.getAllChatsWith(userId)
-    let actual = queryResponse;
-    console.log(actual)
-    let expected = "not sure"
+    let queryResponse = await (await messagesQueries.getAllChatsWith(userId)).map(x => {
+        let temp = { ...x }
+        temp.lastMessage.timeAndDate = getDateWithoutMS(temp.lastMessage.timeAndDate)
+        return temp;
+    })
+    let actual = JSON.stringify(queryResponse);
+    let expected = JSON.stringify(testObjects.getAllChatsWith.map(x => {
+        let temp = { ...x }
+        temp.lastMessage.timeAndDate = getDateWithoutMS(temp.lastMessage.timeAndDate)
+        return temp;
+    }));
     t.deepEqual(actual, expected)
     t.end()
-    })
+})
+
+
+
+tape('add message when provided "senderUserId", "recipUserId", "message","timeAndDate"  ', async t => {
+    await resetDatabase();
+    let userId = 1
+    let recipUserId = 2
+    let message = "this is db test message"
+    let timeAndDate = new Date()
+
+    let queryResponse = await messagesQueries.add(userId, recipUserId, message, timeAndDate)
+    let actual = queryResponse
+    let expected = testObjects.addMessages
+    t.deepEqual(actual, expected)
+    t.end()
+})
+
+
+
+tape('delete  message by messageid ', async t => {
+    await resetDatabase();
+    let messageId = 1
+
+    let queryResponse = await messagesQueries.delete(messageId)
+    let actual = queryResponse
+    let expected = testObjects.deleteMessage
+    t.deepEqual(actual, expected)
+    t.end()
+})

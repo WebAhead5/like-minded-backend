@@ -40,7 +40,7 @@ exports.getAllChatsWith = async (userId) => {
             array.push(
                 {
                     profile: match.profile,
-                    lastMessage: lastMessage.rows            
+                    lastMessage: lastMessage.rows[0]            
                 }
             )
         }
@@ -55,17 +55,21 @@ exports.getAllChatsWith = async (userId) => {
 // Add messages when provided "senderUserId", "recipUserId", "message","timeAndDate"
 exports.add = async (userId, recipUserId, message, timeAndDate) => {
     let result;
+    
     try {
-        result = db.query(`INSERT INTO messages("senderUserId", "recipUserId", "message","timeAndDate") VALUES ($1,$2,$3,$4)`, [userId, recipUserId, message, timeAndDate])
+        result = await  db.query(`INSERT INTO messages("senderUserId", "recipUserId", "message", "timeAndDate") VALUES ($1,$2,$3,$4)`, [userId, recipUserId, message, timeAndDate])
+        return {message: "message add successfuly"}
     } catch (error) {
         console.error(error);
         throw error;
     }
 }
 
+// delete  message by messageid 
 exports.delete = async (messageId) => {
     try {
         db.query(`DELETE FROM messages WHERE id = $1`, [messageId])
+        return {message: "message deleted successfuly"}
     } catch (error) {
         console.error(error);
         throw error;
