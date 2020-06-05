@@ -3,16 +3,24 @@ const userProfileModel = require('../model/userProfile.model')
 const relationshipsModel = require('../model/relationships.model')
 
 // Get all messages between userId and otherUserId
-exports.getChat = async (userId, otherUserId, { count, offset }) => {
+exports.getChat = async (userId, otherUserId, fields) => {
+
+    let  count, offset ;
+    if(fields)
+    {
+        count = fields.count;
+        offset = fields.offset;
+    }
+
     let result;
     let arr = [userId,otherUserId];
-    let sql = `SELECT * FROM messages WHERE "senderUserId" = $1 AND "recipUserId" = $2 OR "senderUserId" = $2 AND "recipUserId" = $1 ORDER by "timeAndDate" DESC`;
+    let sql = `SELECT * FROM messages WHERE ("senderUserId" = $1 AND "recipUserId" = $2) OR ("senderUserId" = $2 AND "recipUserId" = $1) ORDER by "timeAndDate" DESC`;
     if (count !== undefined) {
-        sql += ` LIMIT "count" = $3 `
+        sql += ` LIMIT $3 `
         arr.push(count)
         if (offset !== undefined)
            { 
-               sql += `  OFFSET "offset" = $4 `
+               sql += `  OFFSET $4 `
                arr.push(offset)
             }
     }

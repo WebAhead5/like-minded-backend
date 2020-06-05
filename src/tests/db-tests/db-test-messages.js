@@ -11,13 +11,55 @@ tape("tape is working", t => {
     t.end();
 });
 
+tape('get all messages when userId=1 and otherUserId=2 and count = 2 and offset 1', async t => {
+    await resetDatabase();
+    let userId = 1
+    let otherUserId = 2
+    let queryResponse = await messagesQueries.getChat(userId, otherUserId, {count:2 ,offset:1})
+    
+    let actual = queryResponse.map(x => {
+        let temp = { ...x }
+        temp.timeAndDate = getDateWithoutMS(temp.timeAndDate)
+        return temp;
+    });
+    let expected = testObjects.getChat.map(x => {
+        let temp = { ...x }
+        temp.timeAndDate = getDateWithoutMS(temp.timeAndDate)
+        return temp;
+    }).filter((x,id,arr)=> id!==0 );
+    
+    t.deepEqual(actual, expected)
+    t.end()
+})
+
+tape('get all messages when userId=1 and otherUserId=2 and count = 2', async t => {
+    await resetDatabase();
+    let userId = 1
+    let otherUserId = 2
+    let count = 2
+    let queryResponse = await messagesQueries.getChat(userId, otherUserId, {count})
+    
+    let actual = queryResponse.map(x => {
+        let temp = { ...x }
+        temp.timeAndDate = getDateWithoutMS(temp.timeAndDate)
+        return temp;
+    });
+    let expected = testObjects.getChat.map(x => {
+        let temp = { ...x }
+        temp.timeAndDate = getDateWithoutMS(temp.timeAndDate)
+        return temp;
+    }).filter((x,id,arr)=> id!==arr.length-1 );
+
+    t.deepEqual(actual, expected)
+    t.end()
+})
+
 tape('get all messages when userId=1 and otherUserId=2', async t => {
     await resetDatabase();
     let userId = 1
     let otherUserId = 2
-    let count = 25
-    let offset = 25
-    let queryResponse = await messagesQueries.getChat(userId, otherUserId, count, offset)
+    let queryResponse = await messagesQueries.getChat(userId, otherUserId)
+    
     let actual = queryResponse.map(x => {
         let temp = { ...x }
         temp.timeAndDate = getDateWithoutMS(temp.timeAndDate)

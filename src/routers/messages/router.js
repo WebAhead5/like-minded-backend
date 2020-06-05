@@ -11,9 +11,9 @@ const router = express.Router();
 router.get('/messages', async (req, res) => {
     // let { userId } = req.query;
     // console.log(req.body); 
-    // let {userId} = req.body
     // userId = parseInt(userId);
-    let userId = 1
+    // let userId = 1
+    let {userId} = req.body
     let existingMatches = await getAllMatchesWith(userId);
     res.json({ status: 200, data: existingMatches })
 })
