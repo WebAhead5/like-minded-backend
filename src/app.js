@@ -14,7 +14,7 @@ const loadLoggedInUserId = require('./routers/auth/middleware/loadLoggedInUserId
 const usersRouter = require('./routers/userProfile/router')
 const relationshipRouter = require('./routers/relationships/router')
 const messagesRouter = require('./routers/messages/router')
-const settingsRouter = require('./routers/settings/router')
+const settingsRouter = require('./routers/userSettings/router')
 const authRouter = require('./routers/auth/router')
 const csurfRouter = require('./routers/csurf/router')
 
