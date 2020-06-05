@@ -6,6 +6,7 @@ const router = require("../../app");
 const objects = require('../test-objects');
 const resetDatabase = require('../../database/dbbuild');
 
+
 //GET ROUTES
 test("route to homepage", t => {
     supertest(router)
@@ -45,8 +46,25 @@ test('get all messages when userId=1 and otherUserId=2', t => {
         .expect(200)
         .expect("content-type", "application/json; charset=utf-8")
         .end((err, res) => {
-            let actual = res.body
-            let expected = []
+            let actual = res.body.data
+            let expected = [ { id: 2, senderUserId: 1, recipUserId: 2, message: 'How\'s tricks?', timeAndDate: '2020-05-01T10:08:29.107Z' }, { id: 4, senderUserId: 2, recipUserId: 1, message: 'Howdee', timeAndDate: '2020-05-01T10:08:15.375Z' }, { id: 1, senderUserId: 1, recipUserId: 2, message: 'Hey there', timeAndDate: '2020-05-01T10:07:35.000Z' } ]
+            t.deepEquals(actual, expected)
+            t.error(err);
+            t.end();
+        });
+});
+
+
+test('Add messages when provided userId, recipUserId, message, timeAndDate',  t => {
+     resetDatabase();
+    supertest(router)
+        .post('/messages')
+        .send({ userId: 1, recipUserId: 2, message:"hi bitch", timeAndDate:new Date()})
+        .expect(200)
+        .expect("content-type", "application/json; charset=utf-8")
+        .end((err, res) => {
+            let actual = res.body.data
+            let expected = {message: 'message add successfuly'}
             t.deepEquals(actual, expected)
             t.error(err);
             t.end();
