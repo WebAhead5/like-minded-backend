@@ -1,5 +1,5 @@
 const db = require("../database/dbconnection")
-const {checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists,checkUserIdType} = require("./validators")
+const {checkNotNull, validateFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("./validators")
 
 // Get user profile data from userId
 exports.get = async (userId) => {
@@ -20,17 +20,14 @@ exports.update = async (userId, fields) => {
 
     checkUserIdType(userId);
     checkUserExists(userId);
+    checkNotNull(fields);
+    checkObjectKeysPartOfArr(fields, ["firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto","subphotos"])
+    validateFieldTypes(fields);
 
-    if (!fields)
-        throw Error("No fields provided");
-
-    checkObjectKeysPartOfArr(fields, ["firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto"])
 
     let keys = Object.keys(fields);
-
-
     let sqlCommand = `update userProfile set ${keys.map((key, index) => `${key} = $${index + 2}`).join(" , ")} where userid = $1  `;
-    // update userProfile set firstname = $3, lastname = $4 where userid = $1
+    // update userProfile set firstname = $2, lastname = $3 where userid = $1
 
     await db.query(sqlCommand, [userId, ...keys.map(key=>fields[key])])
 
@@ -49,11 +46,11 @@ exports.delete = async (userId) => {
 // exports.add = async ({userId,firstname, lastname, gender, status, bio, job, livingin, primaryphoto}) => {
 exports.add = async (fields) => {
 
-    if (!fields)
-        throw Error("No fields provided");
-
+    checkNotNull(fields)
     requireObjectKeys(fields, ["userId","firstname", "lastname", "gender"])
-    checkObjectKeysPartOfArr(fields,["userId","firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto"])
+    checkUserExists(fields.userId);
+    checkObjectKeysPartOfArr(fields,["userId","firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto","subphotos"])
+    validateFieldTypes(fields);
 
     let keys = Object.keys(fields);
     let sqlCommand = `INSERT into userProfile ( ${keys.map((key) => `${key}`).join(" , ")} ) values ( ${keys.map((key, index) => `$${index + 1}`).join(" , ")} )`;

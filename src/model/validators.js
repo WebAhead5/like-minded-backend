@@ -2,7 +2,7 @@ const dbConnection = require("../database/dbconnection")
 
 exports.checkUserIdType=(userId) =>{
 
-    if(isNaN(userId))
+    if(Number.isNaN(userId))
         throw new Error("user ID must be an integer (a number)")
 
 }
@@ -50,33 +50,72 @@ exports.requireObjectKeys=(object, keysArr = [])=> {
 
 }
 
-exports.validateUserSettingsFieldTypes=(obj)=>{
+exports.validateFieldTypes=(obj)=> {
 
     (async function () {
         let objectKeys = Object.keys(obj);
 
         for (let key of objectKeys) {
             let lowerCase = key.toLowerCase();
+            let availableTypes;
 
-            if (lowerCase === "userid")
-                exports.checkUserIdType(obj[key]);
+            switch (lowerCase) {
 
-            else if (lowerCase === "interestedin") {
-                let availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::interestedIn))::varchar")
-               availableTypes = availableTypes.rows.map(x=>x.toLowerCase());
-                if(!availableTypes.includes(obj[key]))
-                    throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" ` )
+                case "interestedin":
+                    availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::interestedIn))::varchar as coltype")
+                    availableTypes = availableTypes.rows.map(x => x.coltype.toLowerCase());
+                    if (!availableTypes.includes(obj[key]))
+                        throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" `)
+                    break;
+
+
+                case "gender":
+                    availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::genderType))::varchar as coltype")
+                    availableTypes = availableTypes.rows.map(x => x.coltype.toLowerCase());
+                    if (!availableTypes.includes(obj[key]))
+                        throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" `)
+                    break;
+
+
+                case "maxdistance":
+                case"userid":
+                case "maxage":
+                case"minage":
+                    if (Number.isNaN(obj[objectKeys]))
+                        throw new Error(`invalid field value - "${key}" must be a number `);
+                    break;
+
+
+                case "ageprivate":
+                    if (typeof obj[key] !== "boolean")
+                        throw new Error(`invalid field value - "${key}" must be a boolean `);
+                    break;
+
+
+                case "userlocation":
+                case"firstname":
+                case "lastname":
+                case"status":
+                case"bio":
+                case"job":
+                case"primaryphoto":
+                case"livingin":
+                    if (typeof obj[key] !== "string")
+                        throw new Error(`invalid field value - "${key}" must be a string `);
+                    break;
+
+
+                case "subphotos":
+                    if (!Array.isArray(obj[key]) || obj[key].some(val => typeof val !== "string"))
+                        throw new Error(`invalid field value - "${key}" must be an array of strings`);
+                    break;
+
+
             }
-            else if ((lowerCase === "maxdistance" || lowerCase === "maxage" || lowerCase === "minage") && isNaN(obj[objectKeys]))
-                throw new Error(`invalid field value - "${key}" must be a number `);
 
-            else if (lowerCase === "ageprivate")
-                throw new Error(`invalid field value - "${key}" must be a boolean `);
-
-            else if (lowerCase === "userlocation" && typeof obj[key] !== "string")
-                throw new Error(`invalid field value - "${key}" must be a string `);
 
         }
     })()
 }
+
 
