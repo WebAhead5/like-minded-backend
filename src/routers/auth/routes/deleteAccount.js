@@ -10,7 +10,7 @@ exports.get = async (req,res)=> {
         serverRes.sendError(res, {message: "login required in order to precede"})
 
     try {
-        await auth.deleteAccount(res.userId);
+        await auth.deleteAccount(res.sessionId);
         serverRes.sendData(res, {message: "account deletion successful"});
 
     } catch (e) {
