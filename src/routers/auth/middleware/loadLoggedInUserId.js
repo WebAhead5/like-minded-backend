@@ -23,7 +23,7 @@ module.exports = async ( req,res,next)=>{
         }
 
     } catch (e) {
-        serverRes.sendError(res,e.message)
+       // return  serverRes.sendError(res,{message:e.message})
 
     }
 
