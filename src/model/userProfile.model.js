@@ -1,11 +1,12 @@
 const db = require("../database/dbconnection")
-const {checkNotNull, validateFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("./validators")
-
+const {checkNotNull, validateFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("../tools/modelsInputValidators")
 // Get user profile data from userId
 exports.get = async (userId) => {
 
+
     checkUserIdType(userId);
-    checkUserExists(userId);
+    await checkUserExists(userId);
+
 
     let result = await db.query("select * from userprofile where userId = $1", [userId])
 
@@ -19,7 +20,7 @@ exports.get = async (userId) => {
 exports.update = async (userId, fields) => {
 
     checkUserIdType(userId);
-    checkUserExists(userId);
+    await checkUserExists(userId);
     checkNotNull(fields);
     checkObjectKeysPartOfArr(fields, ["firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto","subphotos"])
     validateFieldTypes(fields);
@@ -37,7 +38,7 @@ exports.update = async (userId, fields) => {
 exports.delete = async (userId) => {
 
     checkUserIdType(userId);
-    checkUserExists(userId);
+    await checkUserExists(userId);
 
     await db.query(`delete from userProfile where userId = $1`, [userId])
 }
