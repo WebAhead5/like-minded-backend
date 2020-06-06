@@ -108,8 +108,8 @@ exports.clearExpiredSession= async  ()=>{
 }
 exports.getUserInfo = async ( sessionId ) =>{
     //TODO: implement after the userProfile and userSettings queries are available
-    if(!sessionId)
-        throw new sessionId()
+    if(sessionId === undefined)
+        throw new Error("sessionId required in order to precede - user must log in first")
 
    let sessionInfo =  await exports.getSessionInfo(sessionId)
 

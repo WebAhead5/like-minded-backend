@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS useranswers
     CASCADE;
 
 
-CREATE TABLE useranswers
+CREATE TABLE "userAnswers"
 (
     id SERIAL PRIMARY KEY,
     userId INTEGER NOT NULL,

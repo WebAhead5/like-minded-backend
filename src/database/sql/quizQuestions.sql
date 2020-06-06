@@ -2,7 +2,7 @@ BEGIN;
 
 DROP TABLE IF EXISTS quizquestions CASCADE;
 
-CREATE TABLE quizquestions (
+CREATE TABLE "quizQuestions" (
     id SERIAL PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
     question VARCHAR(300) NOT NULL,

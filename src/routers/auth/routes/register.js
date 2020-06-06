@@ -7,6 +7,7 @@ exports.post = async  (req,res)=>
 {
 
     try {
+
         let userId = await auth.register(req.body)
         const sessionRow = await auth.createSession(userId, process.env.SESSION_DURATION_MIN )
         res.cookie("sid", sessionRow.id,{expires:moment(sessionRow.expires).toDate()})

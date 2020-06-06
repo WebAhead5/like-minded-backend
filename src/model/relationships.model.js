@@ -25,9 +25,9 @@ exports.getRelationshipStatusBetween = async (userId, candidateId) => {
 exports.getAllMatchesWith = async (userId) => {
     try {
         let allMatches = await db.query(`SELECT * FROM "userrelationship" WHERE ("userId1" = $1 OR "userId2" = $1) AND "user1-towards-user2" = 'like' AND "user2-towards-user1" = 'like'`, [userId])
-        rows = allMatches.rows;
+        let rows = allMatches.rows;
         let profiles = []
-        for (row in rows) {
+        for (let row in rows) {
             profiles.push({ profile: await userProfileModel.get(rows[row].userId1 == userId? rows[row].userId2 : rows[row].userId1) })
         }
         return profiles
@@ -39,8 +39,8 @@ exports.getAllMatchesWith = async (userId) => {
 
 // Get relationships where user has selected none/block/like
 exports.getRelationshipWhereUserSelected = async (status, userId) => {
-    if (!status || !userId) throw Error(__dirname, "params not provided");
-    if (isNaN(userId)) throw Error(__dirname, "userId is not a number");
+    if (!status || !userId) throw Error( "params not provided");
+    if (isNaN(userId)) throw Error("userId is not a number");
     try {
         let potentialMatches = await db.query(
             `SELECT * FROM userRelationship WHERE ( "userId1" = $1 AND "user1-towards-user2" = $2)
@@ -48,10 +48,10 @@ exports.getRelationshipWhereUserSelected = async (status, userId) => {
 
             let formattedRelationshipObject = [];
 
-            for (row of potentialMatches.rows) {
+            for (let row of potentialMatches.rows) {
                 formattedRelationshipObject.push( {
                     "profile": await userProfileModel.get(row.userId1 == userId? row.userId2 : row.userId1),
-                    ...exports.getRelationshipStatusBetween(userId,row.userId1 == userId? row.userId2 : row.userId1)
+                    ...await exports.getRelationshipStatusBetween(userId, row.userId1 == userId ? row.userId2 : row.userId1)
                 })
             }
                       
@@ -70,10 +70,10 @@ exports.getRelationshipsWhereCandidateSelected = async (status, userId) => {
             OR ( "userId1" = $1 AND "user2-towards-user1" = $2)`, [userId, status])
 
             let formattedRelationshipObject = [];
-            for (row of potentialMatches.rows) {
+            for (let row of potentialMatches.rows) {
                 formattedRelationshipObject.push( {
                     "profile": await userProfileModel.get(row.userId1 == userId? row.userId2 : row.userId1),
-                    ...exports.getRelationshipStatusBetween(userId,row.userId1 == userId? row.userId2 : row.userId1)
+                    ...await exports.getRelationshipStatusBetween(userId, row.userId1 == userId ? row.userId2 : row.userId1)
                 })
             }    
         return formattedRelationshipObject;
@@ -88,7 +88,7 @@ exports.setRelationshipStatus = async (userId, candidateId, status) => {
     try {
         // Get relationship between user and candidate
         let statusCheck = await db.query(
-            'SELECT * FROM "userRelationship" WHERE ("userId1" = $1 AND "userId2" = $2) OR ("userId1" = $2 AND "userId2" = $1)', [userId, candidateId]
+            'SELECT * FROM userRelationship WHERE ("userId1" = $1 AND "userId2" = $2) OR ("userId1" = $2 AND "userId2" = $1)', [userId, candidateId]
         )
         // eg, SELECT * FROM "userRelationship" WHERE ("userId1" = 1 AND "userId2" = 2) OR ("userId1" = 2 AND "userId2" = 1)
 
@@ -108,8 +108,7 @@ exports.setRelationshipStatus = async (userId, candidateId, status) => {
                     status]
             )
             // eg, UPDATE userRelationship SET "user1-towards-user2" = 'like' WHERE "userId1" = 1 AND "userId2" = 2
-            let updatedRelationship = await exports.getRelationshipStatusBetween(userId, candidateId)
-            return updatedRelationship;
+            return await exports.getRelationshipStatusBetween(userId, candidateId);
         }
     } catch (error) {
         console.error("UPDATE ", error);
