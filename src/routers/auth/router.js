@@ -7,7 +7,7 @@ const register  =require("./routes/register");
 const deleteAccount  =require("./routes/deleteAccount");
 
 router.post("/login",login.post);
-router.get("/logout",logout.get);
+router.all("/logout",logout.get);
 router.post("/register",register.post);
 router.get("/currentUser",currentUser.get);
 router.get("/deleteAccount",deleteAccount.get);
