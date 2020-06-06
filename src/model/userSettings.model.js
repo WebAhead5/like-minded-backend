@@ -1,5 +1,5 @@
 const db = require("../database/dbconnection")
-const {checkNotNull, validateFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("../tools/modelsInputValidators")
+const {checkNotNull, validateObjectFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("../tools/modelsInputValidators")
 
 //  retrieve the user settings of the provided user id
 exports.get = async (userId) => {
@@ -23,7 +23,7 @@ exports.update = async (userId, fields) => {
     await checkUserExists(userId);
     checkNotNull(fields);
     checkObjectKeysPartOfArr(fields, ["interestedIn", "maxDistance", "ageMin", "ageMax", "agePrivate", "userLocation"])
-    validateFieldTypes(fields);
+    validateObjectFieldTypes(fields);
 
     let keys = Object.keys(fields)
 
@@ -52,7 +52,7 @@ exports.add = async (fields) => {
     checkUserIdType(fields.userId);
     await checkUserExists(fields.userId);
     checkObjectKeysPartOfArr(fields,[ "userId", "interestedIn", "maxDistance", "ageMin", "ageMax", "agePrivate", "userLocation "])
-    validateFieldTypes(fields);
+    validateObjectFieldTypes(fields);
 
 
     let keys = Object.keys(fields);

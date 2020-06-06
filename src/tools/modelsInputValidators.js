@@ -49,7 +49,7 @@ exports.requireObjectKeys=(object, keysArr = [])=> {
 
 }
 
-exports.validateFieldTypes=(obj)=> {
+exports.validateObjectFieldTypes=(obj)=> {
 
     (async function () {
         let objectKeys = Object.keys(obj);
@@ -121,5 +121,3 @@ exports.validateFieldTypes=(obj)=> {
         }
     })()
 }
-
-

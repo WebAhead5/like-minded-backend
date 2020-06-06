@@ -1,5 +1,5 @@
 const db = require("../database/dbconnection")
-const {checkNotNull, validateFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("../tools/modelsInputValidators")
+const {checkNotNull, validateObjectFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("../tools/modelsInputValidators")
 // Get user profile data from userId
 exports.get = async (userId) => {
 
@@ -23,7 +23,7 @@ exports.update = async (userId, fields) => {
     await checkUserExists(userId);
     checkNotNull(fields);
     checkObjectKeysPartOfArr(fields, ["firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto","subphotos"])
-    validateFieldTypes(fields);
+    validateObjectFieldTypes(fields);
 
 
     let keys = Object.keys(fields);
@@ -52,7 +52,7 @@ exports.add = async (fields) => {
     checkUserIdType(fields.userId);
     await checkUserExists(fields.userId);
     checkObjectKeysPartOfArr(fields,["userId","firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto","subphotos"])
-    validateFieldTypes(fields);
+    validateObjectFieldTypes(fields);
 
     let keys = Object.keys(fields);
     let sqlCommand = `INSERT into userProfile ( ${keys.map((key) => `${key}`).join(" , ")} ) values ( ${keys.map((key, index) => `$${index + 1}`).join(" , ")} )`;
