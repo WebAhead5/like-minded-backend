@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const serverRes = require("../../tools/serverResponse")
 const csrf = require("csurf")
-const csrfProtection = csrf({ cookie: true })
+const csrfProtection = csrf({ cookie: true ,signed :true,maxAge :129600})
 
 
 router.get("/csurfToken",(req,res,next)=>{

@@ -15,7 +15,7 @@ exports.post = async (req,res)=> {
         const {expires, sessionId} = await auth.createSession(userId, process.env.SESSION_DURATION_MIN)
 
         //store the session id in a cookie
-        res.cookie("sid", sessionId, {expires: expires})
+        res.cookie("sid", sessionId, {expires: expires,signed:true})
 
         //return a "successful" message
         serverRes.sendData(res, {message: "logged in successfully"})
