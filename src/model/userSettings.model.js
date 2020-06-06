@@ -1,12 +1,12 @@
 const db = require("../database/dbconnection")
-const {checkNotNull, validateFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("./validators")
+const {checkNotNull, validateFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("../tools/modelsInputValidators")
 
 //  retrieve the user settings of the provided user id
 exports.get = async (userId) => {
 
 
     checkUserIdType(userId);
-    checkUserExists(userId);
+    await checkUserExists(userId);
 
 
     let result = await db.query("select * from userSettings where id = $1", [userId])
@@ -20,7 +20,7 @@ exports.get = async (userId) => {
 exports.update = async (userId, fields) => {
 
     checkUserIdType(userId);
-    checkUserExists(userId);
+    await checkUserExists(userId);
     checkNotNull(fields);
     checkObjectKeysPartOfArr(fields, ["interestedIn", "maxDistance", "ageMin", "ageMax", "agePrivate", "userLocation"])
     validateFieldTypes(fields);
@@ -38,7 +38,7 @@ exports.update = async (userId, fields) => {
 exports.delete = async (userId) => {
 
     checkUserIdType(userId);
-    checkUserExists(userId);
+    await checkUserExists(userId);
 
     await db.query(`delete from userSettings where userId = $1`, [userId])
 }
@@ -49,7 +49,8 @@ exports.add = async (fields) => {
 
     checkNotNull(fields)
     requireObjectKeys(fields, ["userId"])
-    checkUserExists(fields.userId);
+    checkUserIdType(fields.userId);
+    await checkUserExists(fields.userId);
     checkObjectKeysPartOfArr(fields,[ "userId", "interestedIn", "maxDistance", "ageMin", "ageMax", "agePrivate", "userLocation "])
     validateFieldTypes(fields);
 

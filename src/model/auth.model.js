@@ -1,6 +1,6 @@
 
 const dbConnection = require("../database/dbconnection");
-const {checkEmailStructure,checkUserExists,checkUserIdType} = require("./validators")
+const {checkEmailStructure,checkUserExists,checkUserIdType} = require("../tools/modelsInputValidators")
 const userProfile = require("./userProfile.model");
 const userSettings = require("./userProfile.model");
 

@@ -2,7 +2,7 @@ let tape = require('tape')
 const _tape = require('tape-promise').default;
 const test = _tape(tape)
 const supertest = require("supertest");
-const app = require("../../app");
+const app = require("../../../app");
 
 
 //GET ROUTES

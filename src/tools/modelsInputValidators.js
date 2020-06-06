@@ -2,7 +2,7 @@ const dbConnection = require("../database/dbconnection")
 
 exports.checkUserIdType=(userId) =>{
 
-    if(Number.isNaN(userId))
+    if(isNaN(userId))
         throw new Error("user ID must be an integer (a number)")
 
 }
@@ -12,13 +12,12 @@ exports.checkNotNull=(obj) =>{
        throw new Error("null object provided/no fields provided")
 
 }
-exports.checkUserExists=(userId) =>{
+exports.checkUserExists= async (userId) => {
 
-    (async function () {
-        let res = await dbConnection.query("select * from auth where id = $1 ", [userId])
-        if (res.rowCount !== 1)
-            throw new Error("no user exists with userId " + userId)
-    })();
+
+    let res = await dbConnection.query("select * from auth where id = $1 ", [userId])
+    if (res.rowCount !== 1)
+        throw new Error("no user exists with userId " + userId)
 
 }
 exports.checkEmailStructure=(email)=> {
@@ -77,8 +76,13 @@ exports.validateFieldTypes=(obj)=> {
                     break;
 
 
-                case "maxdistance":
+
                 case"userid":
+                    exports.checkUserExists(obj[key])
+                    break;
+
+
+                case "maxdistance":
                 case "maxage":
                 case"minage":
                     if (Number.isNaN(obj[objectKeys]))

@@ -1,10 +1,10 @@
 let tape = require('tape')
 const _tape = require('tape-promise').default;
 tape = _tape(tape)
-const resetDatabase = require('../../database/dbbuild');
+const resetDatabase = require('../../../database/dbbuild');
 
-const relationshipsQueries = require('../../model/relationships.model');
-const userProfileQueries = require('../../model/userProfile.model');
+const relationshipsQueries = require('../../../model/relationships.model');
+const userProfileQueries = require('../../../model/userProfile.model');
 const testObjects = require('../test-objects')
 
 tape("tape is working", t => {
