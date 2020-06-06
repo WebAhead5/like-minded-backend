@@ -18,9 +18,9 @@ CREATE TABLE userprofile
     status VARCHAR(100) ,
     bio VARCHAR(300) ,
     job VARCHAR(100) ,
-    livingin VARCHAR(200) ,
-    primaryphoto TEXT ,
-    subphotos TEXT[]
+    livingIn VARCHAR(200) ,
+    primaryPhoto TEXT ,
+    subPhotos TEXT[]
 );
 
 INSERT INTO userprofile

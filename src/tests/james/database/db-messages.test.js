@@ -2,9 +2,9 @@ let tape = require('tape')
 const _tape = require('tape-promise').default;
 tape = _tape(tape)
 const testObjects = require('../test-objects')
-const resetDatabase = require('../../database/dbbuild');
+const resetDatabase = require('../../../database/dbbuild');
 
-const messagesQueries = require('../../model/messages.model');
+const messagesQueries = require('../../../model/messages.model');
 
 tape("tape is working", t => {
     t.equals(1, 1, "one equals one");

@@ -1,5 +1,6 @@
 
 const dbConnection = require("../database/dbconnection");
+const {checkEmailStructure,checkUserExists,checkUserIdType} = require("../tools/modelsInputValidators")
 const userProfile = require("./userProfile.model");
 const userSettings = require("./userProfile.model");
 
@@ -117,28 +118,6 @@ exports.currentUser = async (sessionID)=>{
 exports.getUserInfo = async ( sessionId ) =>{
     //TODO: implement after the userProfile and userSettings queries are available
 }
-
-
-
-function checkUserIdType(userId) {
-    if(isNaN(userId))
-        throw new Error("invalid userId provided")
-}
-function checkUserExists(userId) {
-
-    (async function () {
-        let res = await dbConnection.query("select * from auth where id = $1 ", [userId])
-        if (res.rowCount !== 1)
-            throw new Error("no user exists with userId " + userId)
-    })();
-
-}
-function checkEmailStructure(email) {
-    if(!/^([a-zA-Z0-9]+[_.\-]?)+@([a-zA-Z0-9_\-]*\.?[a-zA-Z0-9_\-]{1,})+$/.test(email))
-        throw new Error("invalid email structure was provided");
-
-}
-
 
 
 
