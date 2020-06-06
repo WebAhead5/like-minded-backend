@@ -16,6 +16,7 @@ CREATE TABLE messages
 );
 
 
+-- noinspection SpellCheckingInspection
 
 INSERT INTO messages
 VALUES

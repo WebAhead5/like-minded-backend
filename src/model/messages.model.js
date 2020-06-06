@@ -16,18 +16,17 @@ exports.get = async (userId, otherUserId) => {
 
 // Add messages when provided "senderUserId", "recipUserId", "message","timeAndDate"
 exports.add = async (userId, recipUserId, message, timeAndDate) => {
-    let result;
-    try {
-        result = db.query(`INSERT INTO messages("senderUserId", "recipUserId", "message","timeAndDate") VALUES ($1,$2,$3,$4)`, [userId, recipUserId, message, timeAndDate])
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+
+
+         await db.query(`INSERT INTO messages("senderUserId", "recipUserId", "message","timeAndDate") VALUES ($1,$2,$3,$4)`, [userId, recipUserId, message, timeAndDate])
+
 }
 
 exports.delete = async (messageId) => {
     try {
-        db.query(`DELETE FROM messages WHERE id = $1`,[messageId])
+        await db.query(`DELETE
+                        FROM messages
+                        WHERE id = $1`, [messageId])
     } catch (error) {
         console.error(error);
         throw error;

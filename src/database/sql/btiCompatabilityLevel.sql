@@ -1,3 +1,5 @@
+-- noinspection SpellCheckingInspectionForFile
+
 BEGIN;
 
 DROP TABLE IF EXISTS mbticompatabilitylevel

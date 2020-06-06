@@ -25,7 +25,7 @@ exports.update = async (userId, fields) => {
     checkNotNull(fields);
     checkObjectKeysPartOfArr(fields, ["firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto","subphotos"])
     noDuplicateObjectKeys(fields)
-    validateObjectFieldTypes(fields);
+    await validateObjectFieldTypes(fields);
 
 
     let keys = Object.keys(fields);
@@ -55,7 +55,7 @@ exports.add = async (fields) => {
     await checkUserExists(fields.userId);
     checkObjectKeysPartOfArr(fields,["userId","firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto","subphotos"])
     noDuplicateObjectKeys(fields)
-    validateObjectFieldTypes(fields);
+    await validateObjectFieldTypes(fields);
 
     let keys = Object.keys(fields);
     let sqlCommand = `INSERT into userProfile ( ${keys.map((key) => `${key}`).join(" , ")} ) values ( ${keys.map((key, index) => `$${index + 1}`).join(" , ")} )`;
