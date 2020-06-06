@@ -27,7 +27,7 @@ exports.getSessionInfo = async ( sessionId ) => {
     return sessionInfo.rows[0];
 }
 
-exports.validateCredentials = async ( fields ) => {
+exports.validateCredentials = async ( fields ,passCompareCB ) => {
 
     //validate and limit body fields
     requireObjectKeys(fields, ["email", "password"]);
@@ -37,8 +37,8 @@ exports.validateCredentials = async ( fields ) => {
 
     //make field keys case insensitive + change email to lower case
     let keys = Object.keys(fields)
-    let email = fields[keys.filter(key => key.toLowerCase() === "email")].toLowerCase()
-    let password = fields[keys.filter(key => key.toLowerCase() === "password")]
+    let email = fields[keys.filter(key => key.toLowerCase() === "email")[0]].toLowerCase()
+    let password = fields[keys.filter(key => key.toLowerCase() === "password")[0]]
 
 
 
@@ -54,11 +54,15 @@ exports.validateCredentials = async ( fields ) => {
         throw new Error("no user is registered under the provided email")
 
 
-    //validate credentials
-    res = await dbConnection.query("select * from auth where password = $1 and email = $2 ", [password, email])
 
-    if (res.rowCount !== 1)
+    if (
+        (passCompareCB?
+          !passCompareCB(password,res.rows[0].password)
+          : password !== res.rows[0].password)
+        )
         throw new Error("incorrect credentials")
+
+
 
 
     //return user id
@@ -173,11 +177,11 @@ exports.register=async (fields)=>{
     noDuplicateObjectKeys(fields)
 
     let keys = Object.keys(fields)
-    let email = fields[keys.filter(key=> key.toLowerCase() === "email")].toLowerCase()
-    let password = fields[keys.filter(key=> key.toLowerCase() === "password")]
-    let firstName = fields[keys.filter(key=> key.toLowerCase() === "firstname")].toLowerCase()
-    let lastName = fields[keys.filter(key=> key.toLowerCase() === "lastname")].toLowerCase()
-    let gender = fields[keys.filter(key=> key.toLowerCase() === "gender")]
+    let email = fields[keys.filter(key=> key.toLowerCase() === "email")[0]].toLowerCase()
+    let password = fields[keys.filter(key=> key.toLowerCase() === "password")[0]]
+    let firstName = fields[keys.filter(key=> key.toLowerCase() === "firstname")[0]].toLowerCase()
+    let lastName = fields[keys.filter(key=> key.toLowerCase() === "lastname")[0]].toLowerCase()
+    let gender = fields[keys.filter(key=> key.toLowerCase() === "gender")[0]]
 
     checkEmailStructure(email)
     //TODO: check password strength
