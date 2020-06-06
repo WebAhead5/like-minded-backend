@@ -17,13 +17,13 @@ passport.use(new GoogleStrategy({
 (accessToken,refreshToken, profile,done)=>{
 
     console.log(profile)
-    done()
+    // done()
 
 }));
 
 router.get("/google",
     passport.authenticate("google",{
-        scope: ["profile","email"]
+        scope: ["profile","email","https://www.googleapis.com/auth/user.birthday.read","https://www.googleapis.com/auth/user.gender.read"]
     })
 
 )
