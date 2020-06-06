@@ -173,11 +173,11 @@ exports.register=async (fields)=>{
     noDuplicateObjectKeys(fields)
 
     let keys = Object.keys(fields)
-    let email = fields[keys.filter(key=> key.toLowerCase() === "email")].toLowerCase()
-    let password = fields[keys.filter(key=> key.toLowerCase() === "password")]
-    let firstName = fields[keys.filter(key=> key.toLowerCase() === "firstname")].toLowerCase()
-    let lastName = fields[keys.filter(key=> key.toLowerCase() === "lastname")].toLowerCase()
-    let gender = fields[keys.filter(key=> key.toLowerCase() === "gender")]
+    let email = fields[keys.filter(key=> key.toLowerCase() === "email")[0]].toLowerCase()
+    let password = fields[keys.filter(key=> key.toLowerCase() === "password")[0]]
+    let firstName = fields[keys.filter(key=> key.toLowerCase() === "firstname")[0]].toLowerCase()
+    let lastName = fields[keys.filter(key=> key.toLowerCase() === "lastname")[0]].toLowerCase()
+    let gender = fields[keys.filter(key=> key.toLowerCase() === "gender")[0]]
 
     checkEmailStructure(email)
     //TODO: check password strength
