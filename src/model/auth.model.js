@@ -32,6 +32,8 @@ exports.validateCredentials = async ( email, password ) => {
     if(!email)
         throw new Error("email was not provided");
 
+    email = email.toLowerCase()
+
     checkEmailStructure(email)
 
 
