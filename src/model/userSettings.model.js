@@ -10,7 +10,7 @@ exports.get = async (userId) => {
     await checkUserExists(userId);
 
 
-    let result = await db.query("select * from userSettings where id = $1", [userId])
+    let result = await db.query("select * from userSettings where userid = $1", [userId])
 
 
     result.rows[0].id = undefined;
