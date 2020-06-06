@@ -27,10 +27,20 @@ exports.update = async (userId, fields) => {
     noDuplicateObjectKeys(fields)
     await validateObjectFieldTypes(fields);
 
-
     let keys = Object.keys(fields);
+
+
+    //change values to lower case
+    if(keys.some(key=> key.toLowerCase()=== "firstname"))
+        fields[keys.filter(key=> key.toLowerCase() === "firstname")[0]].toLowerCase()
+    if(keys.some(key=> key.toLowerCase()=== "lastname"))
+        fields[keys.filter(key=> key.toLowerCase() === "lastname")[0]].toLowerCase()
+
+
+
     let sqlCommand = `update userProfile set ${keys.map((key, index) => `${key} = $${index + 2}`).join(" , ")} where userid = $1  `;
     // update userProfile set firstname = $2, lastname = $3 where userid = $1
+
 
     await db.query(sqlCommand, [userId, ...keys.map(key=>fields[key])])
 

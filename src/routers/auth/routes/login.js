@@ -1,17 +1,15 @@
 
 const auth = require("../../../model/auth.model")
 const serverRes = require("../../../tools/serverResponse")
-const {noDuplicateObjectKeys} = require("../../../tools/modelsInputValidators");
-const {checkObjectKeysPartOfArr} = require("../../../tools/modelsInputValidators");
-const {requireObjectKeys} = require("../../../tools/modelsInputValidators");
-
+const bcrypt = require("bcrypt")
 
 exports.post = async (req,res)=> {
 
 
     try {
+
         //validate credentials
-        let userId = await auth.validateCredentials(req.body)
+        let userId = await auth.validateCredentials(req.body,(pass1,pass2)=> bcrypt.compareSync(pass1, pass2))
 
         //create a session for the user
         const {expires, sessionId} = await auth.createSession(userId, process.env.SESSION_DURATION_MIN)
