@@ -9,6 +9,8 @@ const homeRouter = require("./routers/main/routes/home.js")
 const {notFound,serverError} = require("./routers/main/routes/errors")
 const loadLoggedInUserId = require('./routers/auth/middleware/loadLoggedInUserId')
 const cookieParser = require("cookie-parser")
+const favicon  = require("serve-favicon")
+const path = require('path')
 
 
 //require routers
@@ -24,6 +26,7 @@ const csurfRouter = require('./routers/csurf/router')
 //use middleware
 app.use(cookieParser())
 app.use(express.json())
+app.use(favicon(path.join(__dirname,"..","public","favicon.ico")))
 app.use(loadLoggedInUserId)
 
 
