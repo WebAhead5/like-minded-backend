@@ -5,7 +5,7 @@ const serverRes = require("../../../tools/serverResponse")
 exports.get = async (req,res)=>
 {
     if (!res.sessionId)
-        serverRes.sendError(res, {message: "login required in order to precede"})
+        return serverRes.sendError(res, {message: "login required in order to precede"})
 
 
     try {
