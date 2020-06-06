@@ -27,32 +27,41 @@ exports.getSessionInfo = async ( sessionId ) => {
     return sessionInfo.rows[0];
 }
 
-exports.validateCredentials = async ( email, password ) => {
+exports.validateCredentials = async ( fields ) => {
 
-    if(!email)
-        throw new Error("email was not provided");
+    //validate and limit body fields
+    requireObjectKeys(fields, ["email", "password"]);
+    checkObjectKeysPartOfArr(fields, ["email", "password"]);
+    noDuplicateObjectKeys(fields)
 
-    email = email.toLowerCase()
+
+    //make field keys case insensitive + change email to lower case
+    let keys = Object.keys(fields)
+    let email = fields[keys.filter(key => key.toLowerCase() === "email")].toLowerCase()
+    let password = fields[keys.filter(key => key.toLowerCase() === "password")]
+
+
 
     checkEmailStructure(email)
 
-
-    if(!password)
-        throw new Error("incorrect password")
-
-
     //TODO: check password strength
 
+
+    //check if email exists
     let res = await dbConnection.query("select * from auth where email = $1 ", [email])
 
     if (res.rowCount !== 1)
         throw new Error("no user is registered under the provided email")
 
+
+    //validate credentials
     res = await dbConnection.query("select * from auth where password = $1 and email = $2 ", [password, email])
 
     if (res.rowCount !== 1)
         throw new Error("incorrect credentials")
 
+
+    //return user id
     return res.rows[0].id;
 
 }
