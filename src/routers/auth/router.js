@@ -10,7 +10,7 @@ router.post("/login",login.post);
 router.all("/logout",logout.get);
 router.post("/register",register.post);
 router.get("/currentUser",currentUser.get);
-router.get("/deleteAccount",deleteAccount.get);
+router.post("/deleteAccount",deleteAccount.get);
 
 
 
