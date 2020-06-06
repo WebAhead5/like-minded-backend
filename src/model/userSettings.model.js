@@ -25,7 +25,7 @@ exports.update = async (userId, fields) => {
     checkNotNull(fields);
     checkObjectKeysPartOfArr(fields, ["interestedIn", "maxDistance", "ageMin", "ageMax", "agePrivate", "userLocation"])
     noDuplicateObjectKeys(fields)
-    validateObjectFieldTypes(fields);
+    await validateObjectFieldTypes(fields);
 
     let keys = Object.keys(fields)
 
@@ -64,7 +64,7 @@ exports.add = async (fields) => {
     await checkUserExists(fields.userId);
     checkObjectKeysPartOfArr(fields,[ "userId", "interestedIn", "maxDistance", "ageMin", "ageMax", "agePrivate", "userLocation "])
     noDuplicateObjectKeys(fields)
-    validateObjectFieldTypes(fields);
+    await validateObjectFieldTypes(fields);
 
 
     let keys = Object.keys(fields);

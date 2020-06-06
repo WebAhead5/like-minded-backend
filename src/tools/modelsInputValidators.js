@@ -56,75 +56,74 @@ exports.noDuplicateObjectKeys=(obj)=> {
 
 }
 
-exports.validateObjectFieldTypes=(obj)=> {
-
-    (async function () {
-        let objectKeys = Object.keys(obj);
-
-        for (let key of objectKeys) {
-            let lowerCase = key.toLowerCase();
-            let availableTypes;
-
-            switch (lowerCase) {
-
-                case "interestedin":
-                    availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::interestedIn))::varchar as coltype")
-                    availableTypes = availableTypes.rows.map(x => x.coltype.toLowerCase());
-                    if (!availableTypes.includes(obj[key]))
-                        throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" `)
-                    break;
+exports.validateObjectFieldTypes= async (obj)=> {
 
 
-                case "gender":
-                    availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::genderType))::varchar as coltype")
-                    availableTypes = availableTypes.rows.map(x => x.coltype.toLowerCase());
-                    if (!availableTypes.includes(obj[key]))
-                        throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" `)
-                    break;
+    let objectKeys = Object.keys(obj);
+
+    for (let key of objectKeys) {
+        let lowerCase = key.toLowerCase();
+        let availableTypes;
+
+        switch (lowerCase) {
+
+            case "interestedin":
+                availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::interestedIn))::varchar as coltype")
+                availableTypes = availableTypes.rows.map(x => x.coltype.toLowerCase());
+                if (!availableTypes.includes(obj[key]))
+                    throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" `)
+                break;
 
 
-
-                case"userid":
-                    exports.checkUserExists(obj[key])
-                    break;
-
-
-                case "maxdistance":
-                case "maxage":
-                case"minage":
-                    if (Number.isNaN(obj[objectKeys]))
-                        throw new Error(`invalid field value - "${key}" must be a number `);
-                    break;
+            case "gender":
+                availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::genderType))::varchar as coltype")
+                availableTypes = availableTypes.rows.map(x => x.coltype.toLowerCase());
+                if (!availableTypes.includes(obj[key]))
+                    throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" `)
+                break;
 
 
-                case "ageprivate":
-                    if (typeof obj[key] !== "boolean")
-                        throw new Error(`invalid field value - "${key}" must be a boolean `);
-                    break;
+            case"userid":
+                await exports.checkUserExists(obj[key])
+                break;
 
 
-                case "userlocation":
-                case"firstname":
-                case "lastname":
-                case"status":
-                case"bio":
-                case"job":
-                case"primaryphoto":
-                case"livingin":
-                    if (typeof obj[key] !== "string")
-                        throw new Error(`invalid field value - "${key}" must be a string `);
-                    break;
+            case "maxdistance":
+            case "maxage":
+            case"minage":
+                if (Number.isNaN(obj[objectKeys]))
+                    throw new Error(`invalid field value - "${key}" must be a number `);
+                break;
 
 
-                case "subphotos":
-                    if (!Array.isArray(obj[key]) || obj[key].some(val => typeof val !== "string"))
-                        throw new Error(`invalid field value - "${key}" must be an array of strings`);
-                    break;
+            case "ageprivate":
+                if (typeof obj[key] !== "boolean")
+                    throw new Error(`invalid field value - "${key}" must be a boolean `);
+                break;
 
 
-            }
+            case "userlocation":
+            case"firstname":
+            case "lastname":
+            case"status":
+            case"bio":
+            case"job":
+            case"primaryphoto":
+            case"livingin":
+                if (typeof obj[key] !== "string")
+                    throw new Error(`invalid field value - "${key}" must be a string `);
+                break;
+
+
+            case "subphotos":
+                if (!Array.isArray(obj[key]) || obj[key].some(val => typeof val !== "string"))
+                    throw new Error(`invalid field value - "${key}" must be an array of strings`);
+                break;
 
 
         }
-    })()
+
+
+    }
+
 }
