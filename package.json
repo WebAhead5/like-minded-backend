@@ -16,7 +16,8 @@
     "test-messagesRoutes": "cross-env NODE_ENV=test tape src/tests/james/serverRoutes/messages-router.tests.js | tap-spec",
     "test-userProfileRoutes": "cross-env NODE_ENV=test tape src/tests/james/serverRoutes/userProfile-router.tests.js | tap-spec",
     "test-relationshipRoutes": "cross-env NODE_ENV=test tape src/tests/james/serverRoutes/relationships-router.tests.js | tap-spec",
-    "test-quizzesRoutes": "cross-env NODE_ENV=test tape src/tests/james/serverRoutes/quizzes-router-tests.js | tap-spec"
+    "test-quizzesRoutes": "cross-env NODE_ENV=test tape src/tests/james/serverRoutes/quizzes-router-tests.js | tap-spec",
+    "testtt": "cross-env node src/model/auth.model.js "
   },
   "devDependencies": {
     "cookie-parser": "^1.4.5",

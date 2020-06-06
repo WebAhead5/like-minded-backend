@@ -7,6 +7,8 @@ const homeRouter = require("./routers/main/routes/home.js")
 const {notFound,serverError} = require("./routers/main/routes/errors")
 
 
+app.use(cookieParser())
+app.use(express.json())
 
 const loadLoggedInUserId = require('./routers/auth/middleware/loadLoggedInUserId')
 
@@ -20,8 +22,7 @@ const csurfRouter = require('./routers/csurf/router')
 
 
 
-app.use(cookieParser())
-app.use(express.json())
+
 
 
 

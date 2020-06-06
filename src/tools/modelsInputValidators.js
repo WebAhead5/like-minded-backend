@@ -48,6 +48,13 @@ exports.requireObjectKeys=(object, keysArr = [])=> {
 
 
 }
+exports.noDuplicateObjectKeys=(obj)=> {
+
+    let keys =   Object.keys(obj)
+    if( keys.map(key=>key).length !== keys.length)
+        throw new Error("invalid field provided - duplicate key was detected")
+
+}
 
 exports.validateObjectFieldTypes=(obj)=> {
 

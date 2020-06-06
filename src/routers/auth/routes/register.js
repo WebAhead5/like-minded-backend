@@ -1,4 +1,4 @@
-
+const moment = require("moment")
 const auth = require("../../../model/auth.model")
 const serverRes = require("../../../tools/serverResponse")
 
@@ -13,7 +13,7 @@ exports.post = async  (req,res)=>
         serverRes.sendData(res,{message:"registered and logged in successfully"})
     }
     catch (e) {
-        serverRes.sendError(req,{message: e.message})
+        serverRes.sendError(res,{message: e.message})
     }
 
 }

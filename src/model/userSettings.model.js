@@ -1,4 +1,5 @@
 const db = require("../database/dbconnection")
+const {noDuplicateObjectKeys} = require("../tools/modelsInputValidators");
 const {checkNotNull, validateObjectFieldTypes ,checkObjectKeysPartOfArr, requireObjectKeys ,checkUserExists, checkUserIdType} = require("../tools/modelsInputValidators")
 
 //  retrieve the user settings of the provided user id
@@ -23,9 +24,19 @@ exports.update = async (userId, fields) => {
     await checkUserExists(userId);
     checkNotNull(fields);
     checkObjectKeysPartOfArr(fields, ["interestedIn", "maxDistance", "ageMin", "ageMax", "agePrivate", "userLocation"])
+    noDuplicateObjectKeys(fields)
     validateObjectFieldTypes(fields);
 
     let keys = Object.keys(fields)
+
+    //change values to lower case
+    if(keys.some(key=> key.toLowerCase()=== "email"))
+        fields[keys.filter(key=> key.toLowerCase() === "email")].toLowerCase()
+    if(keys.some(key=> key.toLowerCase()=== "firstname"))
+        fields[keys.filter(key=> key.toLowerCase() === "firstname")].toLowerCase()
+    if(keys.some(key=> key.toLowerCase()=== "lastname"))
+        fields[keys.filter(key=> key.toLowerCase() === "lastname")].toLowerCase()
+
 
     let sqlCommand = `update userSettings set ${keys.map((key,index)=>`${key} = $${index+2}`).join(" , ")} where userid = $1  `;
 
@@ -52,6 +63,7 @@ exports.add = async (fields) => {
     checkUserIdType(fields.userId);
     await checkUserExists(fields.userId);
     checkObjectKeysPartOfArr(fields,[ "userId", "interestedIn", "maxDistance", "ageMin", "ageMax", "agePrivate", "userLocation "])
+    noDuplicateObjectKeys(fields)
     validateObjectFieldTypes(fields);
 
 
