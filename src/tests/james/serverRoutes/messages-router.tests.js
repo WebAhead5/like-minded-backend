@@ -2,13 +2,12 @@ let tape = require('tape')
 const _tape = require('tape-promise').default;
 const test = _tape(tape)
 const supertest = require("supertest");
-const router = require("../../app");
-const objects = require('../test-objects');
-const resetDatabase = require('../../database/dbbuild');
+const app = require("../../../app");
+
 
 //GET ROUTES
 test("route to homepage", t => {
-    supertest(router)
+    supertest(app)
         .get("/")
         .expect(200)
         .expect("content-type", "text/html; charset=utf-8")
@@ -22,7 +21,7 @@ test("route to homepage", t => {
 
 
 test("route to get all relationships where user and candidates like each other", t => {
-    supertest(router)
+    supertest(app)
         .get("/messages")
         .send({userId: 1})
         .expect(200)

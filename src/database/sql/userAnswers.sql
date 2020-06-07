@@ -1,11 +1,11 @@
 BEGIN;
 
 
-DROP TABLE IF EXISTS useranswers
+DROP TABLE IF EXISTS "userAnswers"
     CASCADE;
 
 
-CREATE TABLE useranswers
+CREATE TABLE "userAnswers"
 (
     id SERIAL PRIMARY KEY,
     userId INTEGER NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE useranswers
 );
 
 
-INSERT INTO useranswers
+INSERT INTO "userAnswers"
 (userId, quizQuestionsId, answer)
 VALUES
 (1, 1, -1),

@@ -4,9 +4,7 @@ const { getRelationshipStatusBetween, setRelationshipStatus } = require('../../.
 // Get relationship status between user and candidate
 exports.get = async (req, res) => {
     let { candidateId } = req.params;
-    let { userId } = req.userId || req.body
-
-    if (!userId || !candidateId) return res.json({ status: 404, message: "invalid params were provided" })
+    let { userId } = res
 
     try {
         let relationshipStatus = await getRelationshipStatusBetween(userId, candidateId);
@@ -19,12 +17,31 @@ exports.get = async (req, res) => {
 // Set relationship status between user and candidate
 exports.post = async (req, res) => {
     let { candidateId } = req.params;
-    let { userId, status } = req.body;
-    userId = req.userId || userId;//TODO: remove the "|| userId;
-    if (!userId || !candidateId)
-        return res.json({ status: 404, message: "invalid params were provided" })
+    let { status } = req.body;
+    let  userId = res.userId;
 
-    let relationshipStatus = await setRelationshipStatus(userId, candidateId, status);
 
-    res.json({ status: 200, data: relationshipStatus });
+    try {
+         await setRelationshipStatus(userId, candidateId, status);
+        serverResponse.sendData(res, { message: "updated successfully" })
+
+    } catch (e) {
+        serverResponse.sendError(res, { message: e.message })
+
+    }
+}
+
+exports.postRoute = async (req, res) => {
+    let { candidateId,status } = req.params;
+    let  userId = res.userId;
+
+
+    try {
+        await setRelationshipStatus(userId, candidateId, status);
+        serverResponse.sendData(res, { message: "updated successfully" })
+
+    } catch (e) {
+        serverResponse.sendError(res, { message: e.message })
+
+    }
 }

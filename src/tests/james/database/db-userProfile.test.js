@@ -1,10 +1,10 @@
 let tape = require('tape')
 const _tape = require('tape-promise').default;
 tape = _tape(tape)
-const resetDatabase = require('../../database/dbbuild');
+const resetDatabase = require('../../../database/dbbuild');
 
 const testObjects = require('../test-objects')
-const userProfileQueries = require('../../model/userProfile.model');
+const userProfileQueries = require('../../../model/userProfile.model');
 
 tape("tape is working", t => {
     t.equals(1, 1, "one equals one");
@@ -29,9 +29,8 @@ tape('test userProfile.update with valid userId = 1', async t=> {
     await resetDatabase();
     let userId = 1
     let fields = {"firstname": "Gary", "lastname": "Sideways", "gender": 'male'}
-    let response = await userProfileQueries.update(userId, fields)    
-    let actual = response
-    let expected = { message: 'userProfile updated successfully' }
+    let response = await userProfileQueries.update(userId, fields)
+    let expected = {message: "userProfile deleted successfully"}
     t.deepEqual(actual, expected)
     t.end()
 })

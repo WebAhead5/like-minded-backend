@@ -7,13 +7,13 @@ DROP TYPE IF EXISTS interestedIn
 CASCADE;
 
 CREATE TYPE interestedIn AS ENUM
-('male', 'female', 'both');
+('male', 'female', 'both','');
 
 CREATE TABLE userSettings
 (
     id SERIAL PRIMARY KEY,
     userId INT,
-    interestedIn interestedIn,
+    interestedIn interestedIn default '',
     maxDistance INT,
     ageMin INT,
     ageMax INT,

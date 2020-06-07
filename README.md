@@ -1,2 +1,2 @@
 # like-minded
-Dating app with pychological element
+Dating app with psychological element

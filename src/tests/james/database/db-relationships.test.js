@@ -1,10 +1,10 @@
 let tape = require('tape')
 const _tape = require('tape-promise').default;
 tape = _tape(tape)
-const resetDatabase = require('../../database/dbbuild');
+const resetDatabase = require('../../../database/dbbuild');
 
-const relationshipsQueries = require('../../model/relationships.model');
-const userProfileQueries = require('../../model/userProfile.model');
+const relationshipsQueries = require('../../../model/relationships.model');
+const userProfileQueries = require('../../../model/userProfile.model');
 const testObjects = require('../test-objects')
 
 tape("tape is working", t => {
@@ -35,7 +35,7 @@ tape('test relationships.getAllMatchesWith a valid id', async t => {
     let response = await relationshipsQueries.getAllMatchesWith(userId)
     // let actual = response[0].bounty
     // let expected = 500
-    actual = response
+    let actual = response
     let expected = testObjects.getAllMatchesWith;
     t.deepEqual(actual, expected)
     t.end()
