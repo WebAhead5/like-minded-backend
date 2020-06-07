@@ -11,6 +11,7 @@ const loadLoggedInUserId = require('./routers/auth/middleware/loadLoggedInUserId
 const cookieParser = require("cookie-parser")
 const favicon  = require("serve-favicon")
 const path = require('path')
+const {requireUserToLogin} = require("./routers/auth/middleware/requireUserToLogin")
 
 //require routers
 const usersRouter = require('./routers/userProfile/router')
@@ -36,11 +37,11 @@ app.use(loadLoggedInUserId)
 //use routers
 app.use("/auth", authRouter)
 app.use("/auth", googleAuthRouter)
-app.use(usersRouter)
+app.use(requireUserToLogin, usersRouter)
 app.use(csurfRouter)
-app.use(relationshipRouter)
-app.use(messagesRouter)
-app.use(settingsRouter)
+app.use(requireUserToLogin, relationshipRouter)
+app.use(requireUserToLogin, messagesRouter)
+app.use(requireUserToLogin, settingsRouter)
 
 
 

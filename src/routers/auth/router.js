@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {blockedFromLoggedInUsers,requireUserToLogin} = require("./middleware/requireUserToLogin")
 
 
 const login = require("./routes/login")
@@ -9,11 +10,11 @@ const register  =require("./routes/register");
 const deleteAccount  =require("./routes/deleteAccount");
 
 
-router.post("/login",login.post);
-router.all("/logout",logout.get);
-router.post("/register",register.post);
-router.get("/currentUser",currentUser.get);
-router.post("/deleteAccount",deleteAccount.get);
+router.post("/login",blockedFromLoggedInUsers,login.post);
+router.all("/logout",requireUserToLogin,logout.get);
+router.post("/register",blockedFromLoggedInUsers,register.post);
+router.get("/currentUser",requireUserToLogin,currentUser.get);
+router.post("/deleteAccount",requireUserToLogin,deleteAccount.get);
 
 
 

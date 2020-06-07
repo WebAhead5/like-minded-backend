@@ -11,6 +11,7 @@ const googleClientSecret = envCheck.inProduction? process.env.GOOGLE_SECRET: pro
 const googleAuth = require("../../model/googleAuth.model")
 const auth = require("../../model/auth.model")
 const serverRes = require("../../tools/serverResponse")
+const {blockedFromLoggedInUsers} = require("../auth/middleware/requireUserToLogin")
 
 
 router.use(passport.initialize())
@@ -25,7 +26,7 @@ done(null, profile)
 
 }));
 
-router.get("/google",
+router.get("/google",blockedFromLoggedInUsers,
     passport.authenticate("google",{
         scope: ["profile","email"]
     })
