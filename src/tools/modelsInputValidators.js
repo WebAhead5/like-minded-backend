@@ -51,7 +51,7 @@ exports.requireObjectKeys=(object, keysArr = [])=> {
 exports.noDuplicateObjectKeys=(obj)=> {
 
     let keys =   Object.keys(obj)
-    if( new Set(keys).values().length !== keys.length)
+    if( new Set(keys).size !== keys.length)
         throw new Error("invalid field provided - duplicate key was detected")
 
 }
@@ -68,6 +68,8 @@ exports.validateObjectFieldTypes= async (obj)=> {
         switch (lowerCase) {
 
             case "interestedin":
+                if(!obj[key])
+                    throw new Error(`invalid field value - "${key}" cannot be null`)
                 availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::interestedIn))::varchar as coltype")
                 availableTypes = availableTypes.rows.map(x => x.coltype.toLowerCase());
                 if (!availableTypes.includes(obj[key]))
@@ -76,6 +78,8 @@ exports.validateObjectFieldTypes= async (obj)=> {
 
 
             case "gender":
+                if(!obj[key])
+                    throw new Error(`invalid field value - "${key}" cannot be null`)
                 availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::genderType))::varchar as coltype")
                 availableTypes = availableTypes.rows.map(x => x.coltype.toLowerCase());
                 if (!availableTypes.includes(obj[key]))
