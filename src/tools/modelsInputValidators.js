@@ -86,6 +86,14 @@ exports.validateObjectFieldTypes= async (obj)=> {
                     throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" `)
                 break;
 
+            case "relationshipstatus":
+                if(!obj[key])
+                    throw new Error(`invalid field value - "${key}" cannot be null`)
+                availableTypes = await dbConnection.query("SELECT unnest(enum_range(NULL::relationshipType))::varchar as coltype")
+                availableTypes = availableTypes.rows.map(x => x.coltype.toLowerCase());
+                if (!availableTypes.includes(obj[key]))
+                    throw new Error(`invalid field value - "${key}" must be one of the following values: "${availableTypes.join(", ")}" `)
+                break;
 
             case"userid":
                 await exports.checkUserExists(obj[key])
@@ -123,6 +131,7 @@ exports.validateObjectFieldTypes= async (obj)=> {
                 if (!Array.isArray(obj[key]) || obj[key].some(val => typeof val !== "string"))
                     throw new Error(`invalid field value - "${key}" must be an array of strings`);
                 break;
+
 
 
         }
