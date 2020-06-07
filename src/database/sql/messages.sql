@@ -12,8 +12,8 @@ CREATE TABLE messages
     "senderUserId" INT,
     "recipUserId" INT,
     "message" VARCHAR(300),
-    "timeAndDate" TIMESTAMPTZ 
-    );
+    "timeAndDate" TIMESTAMPTZ default current_timestamp
+);
 
 
 -- noinspection SpellCheckingInspection

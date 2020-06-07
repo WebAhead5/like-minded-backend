@@ -70,6 +70,7 @@ router.route('/relationship/:candidateId')
     .get(relationship.get)
     .post(relationship.post);
 
+
 router.route('/relationship/:candidateId/:status')
     .post(relationship.postRoute);
 
