@@ -1,8 +1,12 @@
 
 const dbConnection = require("../database/dbconnection");
 const {checkEmailStructure,checkUserExists,checkUserIdType} = require("../tools/modelsInputValidators")
+
 const userProfileModel = require("./userProfile.model");
 const userSettingsModel = require("./userSettings.model");
+const messagesModel = require("./messages.model");
+const quizzesModel = require("./quizzes.model");
+
 const {noDuplicateObjectKeys} = require("../tools/modelsInputValidators");
 const {checkObjectKeysPartOfArr} = require("../tools/modelsInputValidators");
 const {requireObjectKeys} = require("../tools/modelsInputValidators");
@@ -135,7 +139,8 @@ exports.getUserInfo = async ( sessionId ) =>{
         userid: sessionInfo.userId,
         profile:  await userProfileModel.get(sessionInfo.userId),
         settings: await userSettingsModel.get(sessionInfo.userId),
-
+        chats: await messagesModel.getAllChatsWith(sessionInfo.userId),
+        quizzes:quizzesModel.getQuizzesData(sessionInfo.userId)
     }
 
 
