@@ -1,7 +1,7 @@
 BEGIN;
 
 
-DROP TABLE IF EXISTS useranswers
+DROP TABLE IF EXISTS "userAnswers"
     CASCADE;
 
 
@@ -14,7 +14,7 @@ CREATE TABLE "userAnswers"
 );
 
 
-INSERT INTO useranswers
+INSERT INTO "userAnswers"
 (userId, quizQuestionsId, answer)
 VALUES
 (1, 1, -1),

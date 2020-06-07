@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS quizquestions CASCADE;
+DROP TABLE IF EXISTS "quizQuestions" CASCADE;
 
 CREATE TABLE "quizQuestions" (
     id SERIAL PRIMARY KEY,
@@ -11,7 +11,7 @@ CREATE TABLE "quizQuestions" (
 );
 
 INSERT INTO
-    quizQuestions
+    "quizQuestions"
 VALUES
     (
         1.0,
