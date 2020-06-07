@@ -114,4 +114,13 @@ router.get('/relationship/userSelection/:status', async (req,res)=>{
 
 
 
+// Get and set relationship status between user and specified candidate
+router.route('/relationship/:candidateId')
+    .get(relationship.get)
+    .post(relationship.post);
+
+
+router.route('/relationship/:candidateId/:status')
+    .post(relationship.postRoute);
+
 module.exports = router;

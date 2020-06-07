@@ -46,12 +46,12 @@ exports.getAllMatchesWith = async (userId) => {
                                        AND "user2-towards-user1" = 'like'`, [userId])
 
     let profiles = []
-    for (let row of allMatches.rows) {
+    for (let row of allMatches.rows)
         profiles.push({profile: await userProfileModel.get(row.userId1 == userId ? row.userId2 : row.userId1)})
 
-        return profiles;
+    return profiles;
 
-    }
+
 }
 
 // Get relationships where user has selected none/block/like

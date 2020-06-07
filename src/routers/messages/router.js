@@ -1,47 +1,29 @@
-const messagesQueries = require('../../model/messages.model')
-const { getAllMatchesWith } = require('../../model/relationships.model');
+
 const express = require('express');
-const serverResponse = require("../../tools/serverResponse")
 const router = express.Router();
 
 
+const messagesRoute = require("./routes/messages")
+const messagesWithRecipRoute = require("./routes/messagesWithRecip")
+const deleteMessageRoute = require("./routes/deleteMessage")
+
+// Get all chats where user and candidates both like each other
+router.get(['/messages','/chats'], messagesRoute.get)
 
 
-// Get all relationships where user and candidates both like each other
-router.get('/messages', async (req, res) => {
-    // let { userId } = req.query;
-    // console.log(req.body); 
-    // let {userId} = req.body
-    // userId = parseInt(userId);
-    let userId = 1
-    let existingMatches = await getAllMatchesWith(userId);
-    res.json({ status: 200, data: existingMatches })
-})
+router.route(['/messages/:recipUserId','/chat/:recipUserId' ])
 
-// Get messages between userId and recipUserId
-router.get('/messages/:recipUserId', async (req, res) => {
-    //NEED TO DECIDE HOW TO GET THIS INFO
-    let { recipUserId } = req.query
-    let { userId } = req.body
-    let messagesData = await messagesQueries.get(userId, recipUserId)
-    res.json({ status: 200, data: messagesData })
-})
+    // Get messages between userId and recipUserId
+    .get(messagesWithRecipRoute.get)
 
-router.post('/messages', async (req, res) => {
-    //NEED TO DECIDE HOW TO GET THIS INFO
-    let { userId, recipUserId, message, timeAndDate } = req.params;
-    let postedMessage = await messagesQueries.add(userId, recipUserId, message, timeAndDate)
+    //send a message to someone
+    .post(messagesWithRecipRoute.post )
 
-    // DO WE NEED TO RESPOND WITH ANYTHING?
-    res.json({ status: 200, data: postedMessage })
-})
 
-router.delete('messages', async (req, res) => {
-    let messageId = req.params.id
-    let deletedMessage = await messagesQueries.delete(messageId);
+router.route('/deleteMessage/:messageId')
+    .delete(deleteMessageRoute.post )
+    .post(deleteMessageRoute.post)
 
-    // DO WE NEED TO RESPOND WITH ANYTHING?
-    res.json({ status: 200, data: postedMessage })
-})
+
 
 module.exports = router;
