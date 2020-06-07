@@ -8,6 +8,7 @@ const app = express();
 const homeRouter = require("./routers/main/routes/home.js")
 const {notFound,serverError} = require("./routers/main/routes/errors")
 const loadLoggedInUserId = require('./routers/auth/middleware/loadLoggedInUserId')
+const renewSessions = require('./routers/auth/middleware/renewSession')
 const cookieParser = require("cookie-parser")
 const favicon  = require("serve-favicon")
 const path = require('path')
@@ -25,11 +26,12 @@ const csurfRouter = require('./routers/csurf/router')
 
 //use middleware
 if(!process.env.COOKIE_SECRET)
-    throw new Error("cookie secret must be priveded");
+    throw new Error("cookie secret must be provided");
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(express.json())
 app.use(favicon(path.join(__dirname,"..","public","favicon.ico")))
 app.use(loadLoggedInUserId)
+app.use(renewSessions)
 
 
 

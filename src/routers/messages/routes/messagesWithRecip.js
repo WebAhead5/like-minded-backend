@@ -11,7 +11,7 @@ exports.get = async (req, res) => {
     let {userId} = res;
 
     if (userId === undefined)
-        return serverResponse.sendError(res, {message: "user mist log in first in order to precede"})
+        return serverResponse.sendError(res, {message: "user must log in first in order to precede"})
 
 
     try {
@@ -35,7 +35,7 @@ exports.post =async (req, res) => {
     let {recipUserId} = req.params;
 
     if (userId === undefined)
-        return serverResponse.sendError(res, {message: "user mist log in first in order to precede"})
+        return serverResponse.sendError(res, {message: "user must log in first in order to precede"})
 
     try {
 

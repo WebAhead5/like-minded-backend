@@ -8,7 +8,7 @@ exports.post = async (req, res) => {
     let {userId} = res;
 
     if (userId === undefined)
-        return serverResponse.sendError(res, {message: "user mist log in first in order to precede"})
+        return serverResponse.sendError(res, {message: "user must log in first in order to precede"})
 
     try {
         //validate message sender if it matches to teh currently logged in user
