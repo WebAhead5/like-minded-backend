@@ -12,6 +12,8 @@ const renewSessions = require('./routers/auth/middleware/renewSession')
 const cookieParser = require("cookie-parser")
 const favicon  = require("serve-favicon")
 const path = require('path')
+const helmet = require("helmet")
+
 
 //require routers
 const usersRouter = require('./routers/userProfile/router')
@@ -29,6 +31,7 @@ if(!process.env.COOKIE_SECRET)
     throw new Error("cookie secret must be provided");
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(express.json())
+app.use(helmet())
 app.use(favicon(path.join(__dirname,"..","public","favicon.ico")))
 app.use(loadLoggedInUserId)
 app.use(renewSessions)
