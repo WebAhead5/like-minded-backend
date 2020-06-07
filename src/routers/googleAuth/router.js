@@ -8,7 +8,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const googleClientID = envCheck.inProduction? process.env.GOOGLE_CLIENT_ID: process.env.DEV_GOOGLE_CLIENT_ID;
 const googleClientSecret = envCheck.inProduction? process.env.GOOGLE_SECRET: process.env.DEV_GOOGLE_SECRET;
 
-
+router.use(passport.initialize())
 passport.use(new GoogleStrategy({
     clientID: googleClientID,
     clientSecret: googleClientSecret,
@@ -17,19 +17,20 @@ passport.use(new GoogleStrategy({
 (accessToken,refreshToken, profile,done)=>{
 
     console.log(profile)
-    // done()
+     return done(null,profile)
 
 }));
 
 router.get("/google",
     passport.authenticate("google",{
-        scope: ["profile","email","https://www.googleapis.com/auth/user.birthday.read","https://www.googleapis.com/auth/user.gender.read"]
+        scope: ["profile","email"]
     })
 
 )
 
 router.get("/google/callback",
-    passport.authenticate("google")
+     passport.authenticate("google",{session: false }),
+    (req,res)=> res.redirect("/auth/google/successful")
 )
 
 
