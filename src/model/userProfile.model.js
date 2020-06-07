@@ -60,7 +60,7 @@ exports.delete = async (userId) => {
 exports.add = async (fields) => {
 
     checkNotNull(fields)
-    requireObjectKeys(fields, ["userId","firstname", "lastname", "gender"])
+    requireObjectKeys(fields, ["userId","firstname", "lastname"])
     checkUserIdType(fields.userId);
     await checkUserExists(fields.userId);
     checkObjectKeysPartOfArr(fields,["userId","firstname", "lastname", "gender", "status", "bio", "job", "livingin", "primaryphoto","subphotos"])

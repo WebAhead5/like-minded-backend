@@ -18,6 +18,7 @@ const relationshipRouter = require('./routers/relationships/router')
 const messagesRouter = require('./routers/messages/router')
 const settingsRouter = require('./routers/userSettings/router')
 const authRouter = require('./routers/auth/router')
+const googleAuthRouter = require('./routers/googleAuth/router')
 const csurfRouter = require('./routers/csurf/router')
 
 
@@ -34,6 +35,7 @@ app.use(loadLoggedInUserId)
 
 //use routers
 app.use("/auth", authRouter)
+app.use("/auth", googleAuthRouter)
 app.use(usersRouter)
 app.use(csurfRouter)
 app.use(relationshipRouter)
