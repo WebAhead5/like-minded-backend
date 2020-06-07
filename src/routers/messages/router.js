@@ -21,15 +21,15 @@ router.get('/messages', async (req, res) => {
 // Get messages between userId and recipUserId
 router.get('/messages/:recipUserId', async (req, res) => {
     //NEED TO DECIDE HOW TO GET THIS INFO
-    let { recipUserId } = req.query
+    let { recipUserId } = req.params
     let { userId } = req.body
-    let messagesData = await messagesQueries.get(userId, recipUserId)
+    let messagesData = await messagesQueries.getChat(userId, recipUserId)
     res.json({ status: 200, data: messagesData })
 })
 
 router.post('/messages', async (req, res) => {
     //NEED TO DECIDE HOW TO GET THIS INFO
-    let { userId, recipUserId, message, timeAndDate } = req.params;
+    let { userId, recipUserId, message, timeAndDate } = req.body;
     let postedMessage = await messagesQueries.add(userId, recipUserId, message, timeAndDate)
 
     // DO WE NEED TO RESPOND WITH ANYTHING?
