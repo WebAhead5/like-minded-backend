@@ -6,7 +6,7 @@ exports.get = async (req, res) => {
     let {userId} = res;
 
     if (userId === undefined)
-        return serverResponse.sendError(res, {message: "user mist log in first in order to precede"})
+        return serverResponse.sendError(res, {message: "user must log in first in order to precede"})
 
     try {
         let existingMatches = await getAllChatsWith(userId);
