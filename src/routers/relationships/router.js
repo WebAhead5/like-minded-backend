@@ -7,29 +7,6 @@ const relationshipStatuses = require('./routes/relationshipStatuses')
 const relationshipsModel = require('../../model/relationships.model')
 const quizzesModel = require('../../model/quizzes.model')
 
-// Get and set relationship status between user and specified candidate
-router.route('/relationship/status/:candidateId')
-    .get(relationship.get)
-    .post(relationship.post);
-
-// Get relationship statuses for user and all candidates.
-router.get('/relationshipStatuses', relationshipStatuses.get)
-
-// Get all relationships where user and candidates both like each other
-router.get('/relationship/matches', matches.get)
-
-router.get('/relationship/userSelection', async (req,res)=>{
-    let { status } = req.body
-    let { userId } = req.userId || req.body
-    try {
-        let candidatesThatAreSelected = await relationshipsModel.getRelationshipWhereUserSelected(status, userId);
-        serverResponse.sendData(res, { data: candidatesThatAreSelected })
-    } catch (error) {
-        serverResponse.sendError(res, {message: error.message })
-    }
-
-})
-
 ///////////////////// QUIZZES /////////////////////////////////
 
 router.get('/quizzes', async (req,res)=>{
@@ -76,7 +53,65 @@ router.get('/quizzesMatch', async (req,res)=>{
     }
 })
 
+/////////////////////////////// RELATIONSHIPS ////////////////////////////////////
+
+// Get and set relationship status between user and specified candidate
+router.route('/relationship/:candidateId')
+    .get(relationship.get)
+    .post(relationship.post);
+
+router.route('/relationship/:candidateId/:status')
+    .post(relationship.postRoute);
+
+// Get relationship statuses for user and all candidates.
+router.get('/relationshipStatuses', relationshipStatuses.get)
+
+// Get all relationships where user and candidates both like each other
+router.get('/relationship/matches', matches.get)
+
+// Get all relationships where user and candidates both like each other
+router.get('/relationship/othersSelection', async (req,res)=>{
+    let { userId } = res
+    try {
+        let candidatesThatAreSelected = await relationshipsModel.getRelationshipsWhereCandidateSelected(null, userId);
+        serverResponse.sendData(res, { data: candidatesThatAreSelected })
+    } catch (error) {
+        serverResponse.sendError(res, {message: error.message })
+    }
+})
+
+router.get('/relationship/othersSelection/:status', async (req,res)=>{
+    let { status } = req.params
+    let { userId } = res;
+    try {
+        let candidatesThatAreSelected = await relationshipsModel.getRelationshipsWhereCandidateSelected(status, userId);
+        serverResponse.sendData(res, { data: candidatesThatAreSelected })
+    } catch (error) {
+        serverResponse.sendError(res, {message: error.message })
+    }
+})
+
+router.get('/relationship/userSelection', async (req,res)=>{
+    let { userId } = res
+    try {
+        let candidatesThatAreSelected = await relationshipsModel.getRelationshipWhereUserSelected(null, userId);
+        serverResponse.sendData(res, { data: candidatesThatAreSelected })
+    } catch (error) {
+        serverResponse.sendError(res, {message: error.message })
+    }
+})
+
+router.get('/relationship/userSelection/:status', async (req,res)=>{
+    let { status } = req.params
+    let { userId } = res
+    try {
+        let candidatesThatAreSelected = await relationshipsModel.getRelationshipWhereUserSelected(status, userId);
+        serverResponse.sendData(res, { data: candidatesThatAreSelected })
+    } catch (error) {
+        serverResponse.sendError(res, {message: error.message })
+    }
+})
 
 
-// /quizzes/question/[QUESTION_ID]
+
 module.exports = router;

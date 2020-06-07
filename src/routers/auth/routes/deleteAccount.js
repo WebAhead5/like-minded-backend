@@ -7,16 +7,15 @@ const auth = require("../../../model/auth.model")
 exports.get = async (req,res)=> {
 
     if (!res.userId)
-        serverRes.sendError(res, {message: "login required"})
+        serverRes.sendError(res, {message: "login required in order to precede"})
 
     try {
-        await auth.deleteAccount(res.userId);
-        res.clearCookie("sid")
+        await auth.deleteAccount(res.sessionId);
         serverRes.sendData(res, {message: "account deletion successful"});
 
     } catch (e) {
         serverRes.sendError(res, {message: e.message})
     }
-    res.clearCookie()
+    res.clearCookie("sid")
 
 }

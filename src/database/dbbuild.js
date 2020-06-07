@@ -18,7 +18,8 @@ const runDbBuild = async () => {
 }
 
 if(process.env.RESETDB === 'true'){
-    runDbBuild()
+    // noinspection JSIgnoredPromiseFromCall
+    (async ()=> await runDbBuild())()
 }
 
 module.exports = runDbBuild

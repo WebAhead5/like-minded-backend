@@ -17,23 +17,28 @@
     "test-userProfileRoutes": "cross-env NODE_ENV=test tape src/tests/router-tests/userProfile-router-tests.js | tap-spec",
     "test-relationshipRoutes": "cross-env NODE_ENV=test tape src/tests/router-tests/relationships-router-tests.js | tap-spec",
     "test-quizzesRoutes": "cross-env NODE_ENV=test tape src/tests/router-tests/quizzes-router-tests.js | tap-spec",
-    "testtt": "cross-env node ./src/model/auth.model.js"
+    "test": "cross-env NODE_ENV=test tape src/tests/moris/**/**.test.js |tap-diff"
   },
   "devDependencies": {
     "cookie-parser": "^1.4.5",
     "nodemon": "^2.0.3",
     "supertest": "^4.0.2",
+    "tap-diff": "^0.1.1",
     "tap-spec": "^5.0.0",
     "tape": "^5.0.0",
     "tape-promise": "^4.0.0"
   },
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "cross-env": "^7.0.2",
     "csurf": "^1.11.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "moment": "^2.26.0",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
     "pg": "^8.2.1",
+    "serve-favicon": "^2.5.0",
     "sql-formatter": "^2.3.3"
   },
   "author": "",

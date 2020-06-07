@@ -4,7 +4,7 @@ const serverRes = require("../../../tools/serverResponse")
 
 module.exports = async ( req,res,next)=>{
 
-    let {sid} = req.cookies
+    let {sid} = req.signedCookies
 
     //if the cookie was not provided / user not logged in
     if(!sid)
@@ -23,7 +23,7 @@ module.exports = async ( req,res,next)=>{
         }
 
     } catch (e) {
-        serverRes.sendError(res,e.message)
+       // return  serverRes.sendError(res,{message:e.message})
 
     }
 

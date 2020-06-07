@@ -3,16 +3,16 @@ BEGIN;
 DROP TABLE IF EXISTS userRelationship
     CASCADE;
 
-DROP TYPE IF EXISTS likeEnum CASCADE;
-CREATE TYPE likeEnum AS ENUM ('block', 'none', 'like');
+DROP TYPE IF EXISTS relationshipType CASCADE;
+CREATE TYPE relationshipType AS ENUM ('block', 'none', 'like');
 
 CREATE TABLE userRelationship
 (
     "id" SERIAL PRIMARY KEY,
     "userId1" INT,
     "userId2" INT,
-    "user1-towards-user2" likeEnum default 'none',
-    "user2-towards-user1" likeEnum default 'none'
+    "user1-towards-user2" relationshipType default 'none',
+    "user2-towards-user1" relationshipType default 'none'
 );
 
 INSERT INTO userRelationship
