@@ -10,8 +10,7 @@ CREATE TABLE "quizQuestions" (
     personalityCode VARCHAR(100) NOT NULL
 );
 
-INSERT INTO
-    quizQuestions (id, title, question, answers, personalityCode)
+INSERT INTO "quizQuestions" (id, title, question, answers, personalityCode)
 VALUES
     (
         1.0,
