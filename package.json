@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node src/index.js",
+    "start": "NODE_ENV=production node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "resetdb": "cross-env RESETDB=true node src/database/dbbuild.js",
     "testDB": "cross-env NODE_ENV=test tape src/tests/db-tests/db-test.js | tap-spec",
