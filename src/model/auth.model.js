@@ -129,10 +129,10 @@ exports.getUserInfo = async ( sessionId ) =>{
         throw new Error("sessionId required in order to precede - user must log in first")
 
    let sessionInfo =  await exports.getSessionInfo(sessionId)
+   console.log(sessionInfo)
 
     if(sessionInfo.hasEnded)
         throw new Error("session has expired - user must be logged in in order precede")
-
 
     return {
         userId: sessionInfo.userId,
@@ -140,7 +140,7 @@ exports.getUserInfo = async ( sessionId ) =>{
         profile:  await userProfileModel.get(sessionInfo.userId),
         settings: await userSettingsModel.get(sessionInfo.userId),
         chats: await messagesModel.getAllChatsWith(sessionInfo.userId),
-        quizzes:quizzesModel.getQuizzesData(sessionInfo.userId)
+       quizzes:quizzesModel.getQuizzesData(sessionInfo.userId)
     }
 
 

@@ -4,7 +4,7 @@ tape = _tape(tape)
 const resetDatabase = require('../../database/dbbuild');
 
 const quizzesQueries = require('../../model/quizzes.model');
-const testObjects = require('../test-objects')
+const testObjects = require('../../tests/james/test-objects')
 
 tape("tape is working", t => {
     t.equals(1, 1, "one equals one");

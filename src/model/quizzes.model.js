@@ -45,8 +45,11 @@ exports.getQuizResult = async (userId, quizTitle) => {
             let mbtiRow = mbtiDataRows.find(row => {
                 return row.mbtitype === personalityType
             });
+            console.log(personalityType, item, mbtiRow);
             return mbtiRow[item]
         }
+
+        
 
         return {
             question: quizTitle,
