@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 // Get userSettings  with userId
-router.get("/userSettings/:userId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
     // for example, we'll send a get request from the front end such as: localhost/userSettings/1
     // let profile = await userProfile.get(parseInt(req.params["profile_id"]))
     let userId = req.params["userId"]
@@ -21,7 +21,7 @@ router.get("/userSettings/:userId", async (req, res) => {
     
 })
 
-router.post("/userSettings", async (req, res) => {
+router.post("/", async (req, res) => {
 
     let {userId} = res
     if(!userId)

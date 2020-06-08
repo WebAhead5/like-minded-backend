@@ -49,9 +49,9 @@ test("route to post /quizzes/question/[QUESTION_ID] with valid questionId", t =>
         });
 });
 
-test("route to get /quizzesResults/[quizTitle] with valid userId", t => {
+test("route to get /quizzes/results/[quizTitle] with valid userId", t => {
     supertest(router)
-        .get('/quizzesResults/MBTI-short')
+        .get('/quizzes/results/MBTI-short')
         .send({ userId: 1 })
         .expect(200)
         .expect("content-type", "application/json; charset=utf-8")
@@ -64,9 +64,9 @@ test("route to get /quizzesResults/[quizTitle] with valid userId", t => {
         });
 });
 
-test("route to get /quizzesMatch with valid userId, candidateId, quizType", t => {
+test("route to get /quizzes/match with valid userId, candidateId, quizType", t => {
     supertest(router)
-        .get('/quizzesMatch')
+        .get('/quizzes/match')
         .send({ userId: 1, candidateId: 2, quizType: 'MBTI-short' })
         .expect(200)
         .expect("content-type", "application/json; charset=utf-8")

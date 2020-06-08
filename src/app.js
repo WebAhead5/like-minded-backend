@@ -13,13 +13,14 @@ const cookieParser = require("cookie-parser")
 const favicon  = require("serve-favicon")
 const path = require('path')
 const helmet = require("helmet")
-
+const {requireUserToLogin} = require("./routers/auth/middleware/requireUserToLogin")
 
 //require routers
 const usersRouter = require('./routers/userProfile/router')
 const relationshipRouter = require('./routers/relationships/router')
 const messagesRouter = require('./routers/messages/router')
 const settingsRouter = require('./routers/userSettings/router')
+const quizzesRouter = require('./routers/quizzes/router')
 const authRouter = require('./routers/auth/router')
 const googleAuthRouter = require('./routers/googleAuth/router')
 const csurfRouter = require('./routers/csurf/router')
@@ -40,12 +41,13 @@ app.use(renewSessions)
 
 //use routers
 app.use("/auth", authRouter)
-app.use("/auth", googleAuthRouter)
-app.use(usersRouter)
+app.use("/auth/google", googleAuthRouter)
 app.use(csurfRouter)
-app.use(relationshipRouter)
-app.use(messagesRouter)
-app.use(settingsRouter)
+app.use("/userProfile", requireUserToLogin, usersRouter)
+app.use("/relationship",requireUserToLogin, relationshipRouter)
+app.use("/quizzes",requireUserToLogin, quizzesRouter)
+app.use(["/messages","/chats"],requireUserToLogin, messagesRouter)
+app.use("/userSettings", requireUserToLogin, settingsRouter)
 
 
 

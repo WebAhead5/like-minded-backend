@@ -1,11 +1,19 @@
 
 const serverRes = require("../../../tools/serverResponse")
 
-module.exports = async ( req,res,next)=>{
+exports.requireUserToLogin = async ( req,res,next)=>{
 
 
-    if(!req.sid)
-       return  serverRes.sendError(res,"user must login first (or renew his session if expired ) in order to access this route")
+    if(!res.sid)
+       return  serverRes.sendError(res,{message:"user must login first in order to precede"})
+
+    next()
+}
+exports.blockedFromLoggedInUsers = async ( req,res,next)=>{
+
+
+    if(res.sid)
+        return  serverRes.sendError(res, {message:"user cannot access this route while logged in"})
 
     next()
 }

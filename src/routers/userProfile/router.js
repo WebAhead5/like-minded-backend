@@ -4,7 +4,7 @@ const serverResponse = require("../../tools/serverResponse")
 const router = express.Router();
 
 // Get user profile with userId
-router.get("/userProfile/:profile_id", async (req, res) => {
+router.get("/:profile_id", async (req, res) => {
     try {
         let profile = await userProfile.get(parseInt(req.params["profile_id"]))
         serverResponse.sendData(res, { data: profile})
@@ -14,7 +14,7 @@ router.get("/userProfile/:profile_id", async (req, res) => {
 })
 
 // Set new profile information
-router.post("/userProfile", async (req, res) => {
+router.post("/", async (req, res) => {
 
     let {userId} = res;
     if(!userId)
