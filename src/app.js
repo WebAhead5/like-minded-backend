@@ -27,7 +27,8 @@ const csurfRouter = require('./routers/csurf/router')
 
 
 //use middleware
-
+if(!process.env.COOKIE_SECRET)
+    throw new Error("cookie secret must be provided");
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(express.json())
 app.use(helmet())
