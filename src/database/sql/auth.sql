@@ -12,7 +12,4 @@ create table auth (
 
 
 
-insert into auth (email, password ) values ('moris.rafol@gmail.com', '123');
-
-
 end;

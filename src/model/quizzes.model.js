@@ -3,9 +3,9 @@ const db = require('../database/dbconnection')
 
 exports.getQuizResult = async (userId, quizTitle) => {
     try {
-        let quizAnswersData = await db.query(`SELECT * FROM "quizAnswers" WHERE "userid" = $1`, [userId])
-        let quizQuestionsData = await db.query(`SELECT * FROM quizquestions`)
-        let mbtiData = await db.query(`SELECT * FROM mbtiInfo`)
+        let quizAnswersData = await db.query(`SELECT * FROM "quizAnswers" WHERE "userId" = $1`, [userId])
+        let quizQuestionsData = await db.query(`SELECT * FROM "quizQuestions"`)
+        let mbtiData = await db.query(`SELECT * FROM "mbtiInfo"`)
 
         // filters through Answers rows and returns only those that match the unique quiz title. Eg, returns all MBTI answers when MBTI is the unique quiz title.
         let getCompletionLevel = (uniqueQuizTitle) => {
@@ -69,13 +69,13 @@ exports.getQuizzesData = async (userId) => {
     try {
 
         // get an array of unique quiz titles 
-        let quizQuestionsData = await db.query(`SELECT * FROM quizquestions`)
+        let quizQuestionsData = await db.query(`SELECT * FROM "quizQuestions"`)
         arrayOfQuizTitles = [];
         quizQuestionsData.rows.map(row => arrayOfQuizTitles.push(row.title));
         let uniqueQuizTitles = arrayOfQuizTitles.filter((item, i, ar) => ar.indexOf(item) === i);
 
         // get the completion level for each quiz type by the user
-        let quizAnswersData = await db.query(`SELECT * FROM "quizAnswers" WHERE "userid" = $1`, [userId])
+        let quizAnswersData = await db.query(`SELECT * FROM "quizAnswers" WHERE "userId" = $1`, [userId])
 
         let getCompletionLevel = (uniqueQuizTitle) => {
 
@@ -132,7 +132,7 @@ exports.getQuizzesMatchResults = async (userId, candidateId, quizType) => {
         let userQuizResults = await exports.getQuizResult(userId, quizType);
         let candidateQuizResults = await exports.getQuizResult(candidateId, quizType);
 
-        let compatabilityData = await db.query(`SELECT * FROM mbticompatabilitylevel WHERE "typeA" = $1 AND "typeB" = $2`, [userQuizResults.mbtiType, candidateQuizResults.mbtiType])
+        let compatabilityData = await db.query(`SELECT * FROM "mbtiCompatabilitylevel" WHERE "typeA" = $1 AND "typeB" = $2`, [userQuizResults.mbtiType, candidateQuizResults.mbtiType])
         let compatabilityScore = compatabilityData.rows[0].compatabilityLevel;
 
         let compatabilityEquivalent = {
@@ -155,7 +155,7 @@ exports.getQuizzesMatchResults = async (userId, candidateId, quizType) => {
 
 exports.setAnswer = async (userId, questionId, userAnswer) => {
 try {
-    db.query(`INSERT INTO useranswers (userId, quizQuestionsId, answer) VALUES ($1,$2,$3 )`, [userId, questionId, userAnswer]);
+    db.query(`INSERT INTO "userAnswers" ("userId", "quizQuestionsId", answer) VALUES ($1,$2,$3 )`, [userId, questionId, userAnswer]);
     return { message: "useranswers updated successfully" }
 } catch (error) {
     console.error(error);
