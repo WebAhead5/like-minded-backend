@@ -31,9 +31,4 @@ VALUES
 (3, 'hadi', 'Khalil', 'male', 'Single', 'ARTIST ', 'COUCH DRIVER', 'Haifa', 'https://avatars0.githubusercontent.com/u/57487623?s=60&v=4', '{"https://avatars2.githubusercontent.com/u/51966598?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4", "https://avatars0.githubusercontent.com/u/10247681?s=60&v=4"}');
 
 
-INSERT INTO userprofile
-(userId,firstName, lastName)
-VALUES
-(1, 'James', 'Daniels');
-
 END;

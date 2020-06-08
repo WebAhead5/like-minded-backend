@@ -5,8 +5,8 @@ DROP TABLE IF EXISTS "quizAnswers" CASCADE;
 
 CREATE TABLE IF NOT EXISTS "quizAnswers" (
     "id" INT,
-    "userid" INT,
-    "questionsid" INT,
+    "userId" INT,
+    "questionsId" INT,
     "answer" INT
 );
 INSERT INTO "quizAnswers" VALUES

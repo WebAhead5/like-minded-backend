@@ -3,7 +3,7 @@ const _tape = require('tape-promise').default;
 const test = _tape(tape)
 const supertest = require("supertest");
 const router = require("../../app");
-const testObjects = require('../../tests/james/test-objects');
+const testObjects = require('../james/test-objects');
 const resetDatabase = require('../../database/dbbuild');
 
 test("route to homepage", t => {

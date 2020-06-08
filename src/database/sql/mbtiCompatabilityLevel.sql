@@ -2,12 +2,12 @@
 
 BEGIN;
 
-DROP TABLE IF EXISTS mbtiCompatabilitylevel
+DROP TABLE IF EXISTS "mbtiCompatabilitylevel"
     CASCADE;
 
 
 
-CREATE TABLE mbtiCompatabilitylevel
+CREATE TABLE "mbtiCompatabilitylevel"
 (
     "id" SERIAL PRIMARY KEY,
     "typeA" VARCHAR(20),
@@ -16,7 +16,7 @@ CREATE TABLE mbtiCompatabilitylevel
 );
 
 
-INSERT INTO mbtiCompatabilitylevel VALUES
+INSERT INTO "mbtiCompatabilitylevel" VALUES
     (1.0,'INFP','INFP',4.0),
     (2.0,'INFP','ENFP',4.0),
     (3.0,'INFP','INFJ',4.0),
@@ -266,8 +266,7 @@ INSERT INTO mbtiCompatabilitylevel VALUES
     (247.0,'ESTJ','INTP',5.0),
     (248.0,'ESTJ','ENTP',2.0),
     (249.0,'ESTJ','ISFP',5.0),
-    (250.0,'ESTJ','ESFP',3.0);
-INSERT INTO mbticompatabilitylevel VALUES
+    (250.0,'ESTJ','ESFP',3.0),
     (251.0,'ESTJ','ISTP',5.0),
     (252.0,'ESTJ','ESTP',3.0),
     (253.0,'ESTJ','ISFJ',2.0),
