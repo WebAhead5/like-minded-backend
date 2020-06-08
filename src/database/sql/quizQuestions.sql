@@ -11,7 +11,7 @@ CREATE TABLE "quizQuestions" (
 );
 
 INSERT INTO
-    quizQuestions (id, title, question, answers, personalityCode)
+    "quizQuestions" (id, title, question, answers, personalityCode)
 VALUES
     (
         1.0,
