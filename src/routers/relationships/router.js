@@ -55,17 +55,6 @@ router.get('/quizzesMatch', async (req,res)=>{
 
 /////////////////////////////// RELATIONSHIPS ////////////////////////////////////
 
-// Get and set relationship status between user and specified candidate
-router.route('/relationship/:candidateId')
-    .get(relationship.get)
-    .post(relationship.post);
-
-router.route('/relationship/:candidateId/:status')
-    .post(relationship.postRoute);
-
-// Get relationship statuses for user and all candidates.
-router.get('/relationshipStatuses', relationshipStatuses.get)
-
 // Get all relationships where user and candidates both like each other
 router.get('/relationship/matches', matches.get)
 
@@ -111,8 +100,6 @@ router.get('/relationship/userSelection/:status', async (req,res)=>{
         serverResponse.sendError(res, {message: error.message })
     }
 })
-
-
 
 // Get and set relationship status between user and specified candidate
 router.route('/relationship/:candidateId')

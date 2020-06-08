@@ -4,7 +4,7 @@ tape = _tape(tape)
 const resetDatabase = require('../../database/dbbuild');
 
 const quizzesQueries = require('../../model/quizzes.model');
-const testObjects = require('../test-objects')
+const testObjects = require('../../tests/james/test-objects')
 
 tape("tape is working", t => {
     t.equals(1, 1, "one equals one");
@@ -76,3 +76,44 @@ tape('quizzes.model.setAnswer with valid userId, questionId, userAnswer', async 
 
 
 ////////////////// INVALID INPUT TESTS //////////////////////////////////
+
+tape('quizzes.model.getQuizzesData with invalid userId', async t => {
+    await resetDatabase();
+    let userId = "wrong"
+    try {
+        let response = await quizzesQueries.getQuizzesData(userId)
+        t.error(true, "Test should have failed. Possibly bad object input?")
+    } catch (error) {
+        t.ok(error, "test failed as per expectations: " + error.message)
+    }
+    t.end()
+})
+
+
+tape('quizzes.model.getQuizResult with valid userId and invalid quizTitle', async t => {
+    await resetDatabase();
+    let userId = 1;
+    let quizTitle = "wrongquiztitle"
+    try {
+        let response = await quizzesQueries.getQuizResult(userId, quizTitle)
+        t.error(true, "Test should have failed. Possibly bad object input?")
+    } catch (error) {
+        t.ok(error, "test failed as per expectations: " + error.message)
+    }
+    t.end()
+})
+
+tape('quizzes.model.getQuizResult with invalid userId and valid quizTitle', async t => {
+    await resetDatabase();
+    let userId = "wronguserid";
+    let quizTitle = "MBTI-short"
+    try {
+        let response = await quizzesQueries.getQuizResult(userId, quizTitle)
+        t.error(true, "Test should have failed. Possibly bad object input?")
+    } catch (error) {
+        
+        t.ok(error, "test failed as per expectations: " + error.message)
+    }
+    t.end()
+})
+

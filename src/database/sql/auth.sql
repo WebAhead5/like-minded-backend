@@ -11,5 +11,11 @@ create table auth (
 );
 
 
+INSERT INTO auth
+("id","email", "password", "googleId")
+VALUES
+(1,'james@email.com', 'password', 'james'),
+(2, 'moris@email.com', 'password', 'morisGoogleId1'),
+(3,'hadi@email.com', 'password1', 'hadiGoogleId1');
 
 end;
