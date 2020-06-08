@@ -1,8 +1,12 @@
 
 const dbConnection = require("../database/dbconnection");
 const {checkEmailStructure,checkUserExists,checkUserIdType} = require("../tools/modelsInputValidators")
+
 const userProfileModel = require("./userProfile.model");
 const userSettingsModel = require("./userSettings.model");
+const messagesModel = require("./messages.model");
+const quizzesModel = require("./quizzes.model");
+
 const {noDuplicateObjectKeys} = require("../tools/modelsInputValidators");
 const {checkObjectKeysPartOfArr} = require("../tools/modelsInputValidators");
 const {requireObjectKeys} = require("../tools/modelsInputValidators");
@@ -125,17 +129,18 @@ exports.getUserInfo = async ( sessionId ) =>{
         throw new Error("sessionId required in order to precede - user must log in first")
 
    let sessionInfo =  await exports.getSessionInfo(sessionId)
+   console.log(sessionInfo)
 
     if(sessionInfo.hasEnded)
         throw new Error("session has expired - user must be logged in in order precede")
-
 
     return {
         userId: sessionInfo.userId,
         userid: sessionInfo.userId,
         profile:  await userProfileModel.get(sessionInfo.userId),
         settings: await userSettingsModel.get(sessionInfo.userId),
-
+        chats: await messagesModel.getAllChatsWith(sessionInfo.userId),
+       quizzes:quizzesModel.getQuizzesData(sessionInfo.userId)
     }
 
 
