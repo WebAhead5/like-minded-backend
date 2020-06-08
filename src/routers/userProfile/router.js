@@ -3,8 +3,6 @@ const express = require('express');
 const serverResponse = require("../../tools/serverResponse")
 const router = express.Router();
 
-
-
 // Get user profile with userId
 router.get("/userProfile/:profile_id", async (req, res) => {
     try {
@@ -21,8 +19,6 @@ router.post("/userProfile", async (req, res) => {
     let {userId} = res;
     if(!userId)
         return serverResponse.sendError(res, { message: "user must log in first" })
-
-
     try {
         await userProfile.update(userId, req.body)
         serverResponse.sendData(res, { message: "updated successfully" })
@@ -31,7 +27,5 @@ router.post("/userProfile", async (req, res) => {
     }
 
 })
-
-
 
 module.exports = router;
