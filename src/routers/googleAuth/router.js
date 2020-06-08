@@ -26,14 +26,14 @@ done(null, profile)
 
 }));
 
-router.get("/google",blockedFromLoggedInUsers,
+router.get("/",blockedFromLoggedInUsers,
     passport.authenticate("google",{
         scope: ["profile","email"]
     })
 
 )
 
-router.get("/google/callback",
+router.get("/callback",
     async (req,res,next)=> {
 
         passport.authenticate("google",{

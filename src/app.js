@@ -41,9 +41,9 @@ app.use(renewSessions)
 
 //use routers
 app.use("/auth", authRouter)
-app.use("/auth", googleAuthRouter)
-app.use("/userProfile", requireUserToLogin, usersRouter)
+app.use("/auth/google", googleAuthRouter)
 app.use(csurfRouter)
+app.use("/userProfile", requireUserToLogin, usersRouter)
 app.use("/relationship",requireUserToLogin, relationshipRouter)
 app.use("/quizzes",requireUserToLogin, quizzesRouter)
 app.use(["/messages","/chats"],requireUserToLogin, messagesRouter)
