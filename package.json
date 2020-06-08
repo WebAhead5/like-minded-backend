@@ -19,6 +19,9 @@
     "test-quizzesRoutes": "cross-env NODE_ENV=test tape src/tests/router-tests/quizzes-router-tests.js | tap-spec",
     "test": "cross-env NODE_ENV=test tape src/tests/moris/**/**.test.js |tap-diff"
   },
+  "engines": {
+    "node":"12.x"
+  },
   "devDependencies": {
     "cookie-parser": "^1.4.5",
     "nodemon": "^2.0.3",
