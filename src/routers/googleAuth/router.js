@@ -26,6 +26,21 @@ done(null, profile)
 
 }));
 
+const cors = require('cors');
+
+app.use('*', function(req, res, next) {
+//replace localhost:8080 to the ip address:port of your server
+    res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Credentials', true);
+    next();
+});
+
+//enable pre-flight
+app.options('*', cors());
+
+
 router.get("/",blockedFromLoggedInUsers,
     passport.authenticate("google",{
         scope: ["profile","email"]
