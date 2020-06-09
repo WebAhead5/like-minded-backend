@@ -26,7 +26,10 @@ const googleAuthRouter = require('./routers/googleAuth/router')
 const csurfRouter = require('./routers/csurf/router')
 
 
-
+app.use((req,res,next)=>{
+    console.log(req)
+    next()
+})
 //use middleware
 if(!process.env.COOKIE_SECRET)
     throw new Error("cookie secret must be provided");
