@@ -18,7 +18,7 @@ router.use(passport.initialize())
 passport.use(new GoogleStrategy({
     clientID: googleClientID,
     clientSecret: googleClientSecret,
-    callbackURL: "/auth/google/callback",
+    callbackURL: "http://localhost:3000/auth/google/callback",
 },
 (accessToken,refreshToken, profile,done)=>{
 
