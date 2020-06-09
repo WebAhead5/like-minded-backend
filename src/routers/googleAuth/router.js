@@ -18,7 +18,7 @@ router.use(passport.initialize())
 passport.use(new GoogleStrategy({
     clientID: googleClientID,
     clientSecret: googleClientSecret,
-    callbackURL: "http://localhost:3000/auth/google/callback",
+    callbackURL: "/auth/google/callback",
 },
 (accessToken,refreshToken, profile,done)=>{
 
@@ -47,7 +47,7 @@ router.get("/callback",
                     .then(( {expires, sessionId})=>{
 
                         res.cookie("sid", sessionId, {expires: expires,signed:true})
-                        res.redirect("/auth/google/successful")
+                        res.redirect("http://localhost:3000/auth/google/successful")
 
                     }).catch(e=>res.redirect("/auth/google/unsuccessful"))
 
