@@ -47,7 +47,7 @@ router.get("/callback",
                     .then(( {expires, sessionId})=>{
 
                         res.cookie("sid", sessionId, {expires: expires,signed:true})
-                        res.redirect("back")
+                        res.redirect("/auth/google/successful")
 
                     }).catch(e=>res.redirect("/auth/google/unsuccessful"))
 
