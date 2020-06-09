@@ -27,8 +27,6 @@ done(null, profile)
 }));
 
 
-//enable pre-flight
-app.options('*', cors());
 
 
 router.get("/",blockedFromLoggedInUsers,
