@@ -34,7 +34,7 @@ app.use((req,res,next)=>{
 if(!process.env.COOKIE_SECRET)
     throw new Error("cookie secret must be provided");
 app.use(cookieParser(process.env.COOKIE_SECRET))
-app.use(express.json())
+app.use(express.json({limit:'50mb' }))
 app.use(helmet())
 app.use(favicon(path.join(__dirname,"..","public","favicon.ico")))
 app.use(loadLoggedInUserId)
