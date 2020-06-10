@@ -26,6 +26,9 @@ done(null, profile)
 
 }));
 
+
+
+
 router.get("/",blockedFromLoggedInUsers,
     passport.authenticate("google",{
         scope: ["profile","email"]
@@ -46,9 +49,9 @@ router.get("/callback",
                         res.cookie("sid", sessionId, {expires: expires,signed:true})
                         res.redirect("/auth/google/successful")
 
-                    }).catch(e=>serverRes.sendError(res,{message:e.message}))
+                    }).catch(e=>res.redirect("/auth/google/unsuccessful"))
 
-            }).catch(e=>serverRes.sendError(res,{message:e.message}))
+            }).catch(e=>res.redirect("/auth/google/unsuccessful"))
 
 
         })(req,res,next)

@@ -2,18 +2,18 @@
 
 exports.sendError= (res, {message , status})=>{
 
-    res.status(status || 404).json({
-        status:404,
+    res.status(200).json({
+        status:status,
         message,
         ok: false
     })
 
 }
 
-exports.sendData= (res, {data, message})=>{
+exports.sendData= (res, {data, message,status = 200})=>{
 
     res.status(200).json({
-        status:200,
+        status:status,
         data,
         message,
         ok: true
