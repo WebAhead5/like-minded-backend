@@ -28,8 +28,6 @@ exports.getRelationshipStatusBetween = async (userId, candidateId) => {
         theirSelection: userId === userId1 ? u2tu1 : u1tu2,
         yourSelection: userId === userId1 ? u1tu2 : u2tu1
     }
-
-
 }
 
 // Get existing matches, where both user and candidate like each other
@@ -37,7 +35,6 @@ exports.getAllMatchesWith = async (userId) => {
 
     validators.checkUserIdType(userId)
     await validators.checkUserExists(userId)
-
 
     let allMatches = await db.query(`SELECT *
                                      FROM "userrelationship"
@@ -50,8 +47,6 @@ exports.getAllMatchesWith = async (userId) => {
         profiles.push({profile: await userProfileModel.get(row.userId1 == userId ? row.userId2 : row.userId1)})
 
     return profiles;
-
-
 }
 
 // Get relationships where user has selected none/block/like
@@ -78,9 +73,7 @@ exports.getRelationshipWhereUserSelected = async (status, userId) => {
         potentialMatches = await db.query(
             `SELECT * FROM userRelationship WHERE ( "userId1" = $1 AND "user1-towards-user2" in (${availableTypes}) )
         OR ( "userId2" = $1 AND "user2-towards-user1" in  (${availableTypes}))`, [userId])
-
     }
-
         let formattedRelationshipObject = [];
 
         for (let row of potentialMatches.rows) {
@@ -89,9 +82,7 @@ exports.getRelationshipWhereUserSelected = async (status, userId) => {
                 ...await exports.getRelationshipStatusBetween(userId, row.userId1 == userId ? row.userId2 : row.userId1)
             })
         }
-
     return formattedRelationshipObject;
-
 }
 
 // Get relationships where candidates have selected none/block/like

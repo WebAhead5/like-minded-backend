@@ -77,9 +77,21 @@ tape('quizzes.model.setAnswer with valid userId, questionId, userAnswer', async 
 
 ////////////////// INVALID INPUT TESTS //////////////////////////////////
 
-tape('quizzes.model.getQuizzesData with invalid userId', async t => {
+tape('quizzes.model.getQuizzesData with invalid userId (string)', async t => {
     await resetDatabase();
     let userId = "wrong"
+    try {
+        let response = await quizzesQueries.getQuizzesData(userId)
+        t.error(true, "Test should have failed. Possibly bad object input?")
+    } catch (error) {
+        t.ok(error, "test failed as per expectations: " + error.message)
+    }
+    t.end()
+})
+
+tape('quizzes.model.getQuizzesData with invalid userId (unknown integer)', async t => {
+    await resetDatabase();
+    let userId = 999
     try {
         let response = await quizzesQueries.getQuizzesData(userId)
         t.error(true, "Test should have failed. Possibly bad object input?")
@@ -117,3 +129,16 @@ tape('quizzes.model.getQuizResult with invalid userId and valid quizTitle', asyn
     t.end()
 })
 
+tape('quizzes.model.getQuizResult with invalid userId (unused id integer) and valid quizTitle', async t => {
+    await resetDatabase();
+    let userId = 999;
+    let quizTitle = "MBTI-short"
+    try {
+        let response = await quizzesQueries.getQuizResult(userId, quizTitle)
+        t.error(true, "Test should have failed. Possibly bad object input?")
+    } catch (error) {
+        
+        t.ok(error, "test failed as per expectations: " + error.message)
+    }
+    t.end()
+})
