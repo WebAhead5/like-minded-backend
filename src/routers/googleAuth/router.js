@@ -11,6 +11,7 @@ const googleClientSecret = envCheck.inProduction? process.env.GOOGLE_SECRET: pro
 const googleAuth = require("../../model/googleAuth.model")
 const auth = require("../../model/auth.model")
 const serverRes = require("../../tools/serverResponse")
+const {blockedFromLoggedInUsers} = require("../auth/middleware/requireUserToLogin")
 
 
 router.use(passport.initialize())
@@ -25,14 +26,17 @@ done(null, profile)
 
 }));
 
-router.get("/google",
+
+
+
+router.get("/",blockedFromLoggedInUsers,
     passport.authenticate("google",{
         scope: ["profile","email"]
     })
 
 )
 
-router.get("/google/callback",
+router.get("/callback",
     async (req,res,next)=> {
 
         passport.authenticate("google",{
@@ -45,9 +49,9 @@ router.get("/google/callback",
                         res.cookie("sid", sessionId, {expires: expires,signed:true})
                         res.redirect("/auth/google/successful")
 
-                    }).catch(e=>serverRes.sendError(res,{message:e.message}))
+                    }).catch(e=>res.redirect("/auth/google/unsuccessful"))
 
-            }).catch(e=>serverRes.sendError(res,{message:e.message}))
+            }).catch(e=>res.redirect("/auth/google/unsuccessful"))
 
 
         })(req,res,next)
