@@ -13,6 +13,6 @@ if (!DATABASE_URL)
 
 module.exports = new Pool({
     connectionString: DATABASE_URL,
-  ssl: inProduction
+  ssl: false
 
 })
