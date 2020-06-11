@@ -13,9 +13,9 @@ tape("tape is working", t => {
 
 ////////////////// VALID INPUT TESTS //////////////////////////////////
 
-tape('quizzes.model.getQuizzesData with valid userId and candidateId', async t => {
+tape('quizzes.model.getQuizzesData with valid userId', async t => {
     await resetDatabase();
-    let userId = 1
+    let userId = 1;
     try {
         let response = await quizzesQueries.getQuizzesData(userId)
         let expected = testObjects.getQuizzesData
@@ -139,6 +139,36 @@ tape('quizzes.model.getQuizResult with invalid userId (unused id integer) and va
     } catch (error) {
         
         t.ok(error, "test failed as per expectations: " + error.message)
+    }
+    t.end()
+})
+
+////////////////////////////// VALID TESTS WITH ALTERNATIVE INPUTS ///////////////////////////////////
+
+tape('quizzes.model.getQuizzesData with valid userId =2', async t => {
+    await resetDatabase();
+    let userId = 2;
+    try {
+        let response = await quizzesQueries.getQuizzesData(userId)
+        let expected = 1
+        let actual = response[0].completionLevel
+        t.deepEquals(actual, expected)
+    } catch (error) {
+        t.error(error, "possibly bad object input?")
+    }
+    t.end()
+})
+
+tape('quizzes.model.getQuizzesData with valid userId =4', async t => {
+    await resetDatabase();
+    let userId = 4;
+    try {
+        let response = await quizzesQueries.getQuizzesData(userId)
+        let expected = 0.5
+        let actual = response[0].completionLevel
+        t.deepEquals(actual, expected)
+    } catch (error) {
+        t.error(error, "possibly bad object input?")
     }
     t.end()
 })
