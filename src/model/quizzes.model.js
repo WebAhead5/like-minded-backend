@@ -16,19 +16,24 @@ exports.getQuizzesData = async (userId) => {
 
         let getCompletionLevel = (uniqueQuizTitle) => {
 
+            let totalNumberOfQuestionsOfQuizType = quizQuestionsData.rows.filter(questionRow => questionRow.title == uniqueQuizTitle).length
+
             // filters through Answers rows and returns only those that match the unique quiz title. Eg, returns all MBTI answers when MBTI is the unique quiz title.
+            // filter through each quiz answer from particular quiz:
             let quizAnswersFilteredToQuizType = quizAnswersData.rows.filter(answersRow => {
-                let foundRow = quizQuestionsData.rows.find(questionsRow => questionsRow.id == answersRow.id)
+
+                // foundRow = the quizQuestion row where the question id matches the id in the answers row id.
+                let foundRow = quizQuestionsData.rows.find(questionsRow => questionsRow.id == answersRow.questionsId)
+                if (foundRow == undefined) { console.log("no matching answered question", foundRow); return }
                 return foundRow.title === uniqueQuizTitle
             })
 
             // Checks the users answers for a quiz type and works out how many answered and how many unanswered. Then we get the percentage complete.
-            let totalAnswered = 0; let totalQuestions = 0;
+            let totalAnswered = 0;
             quizAnswersFilteredToQuizType.forEach(row => {
-                totalQuestions++;
                 row.answer != 0 ? totalAnswered++ : totalAnswered;
             })
-            let percentComplete = totalAnswered / totalQuestions
+            let percentComplete = totalAnswered / totalNumberOfQuestionsOfQuizType
 
             return percentComplete
         }
@@ -36,6 +41,7 @@ exports.getQuizzesData = async (userId) => {
         let getArrayOfQuestionsByQuizType = (type) => {
             // Filter quiz questions by quiz type
             let filteredQuestionsByQuizType = quizQuestionsData.rows.filter(questionsRow => {
+                if (!questionsRow.title) { console.log("no matching questions row question", questionsRow.title); return }
                 return questionsRow.title === type
             })
             return filteredQuestionsByQuizType.map((eachQuestion) => {
@@ -43,7 +49,7 @@ exports.getQuizzesData = async (userId) => {
                 let answersRow = quizAnswersData.rows.find(answersRow => answersRow.id === eachQuestion.id)
                 newObj['id'] = eachQuestion.id;
                 newObj['question'] = eachQuestion.question;
-                newObj['userAnswer'] = answersRow.answer
+                newObj['userAnswer'] = answersRow ? answersRow.answer : 0;
                 newObj['answers'] = eachQuestion.answers;
                 return newObj
             })
@@ -53,7 +59,7 @@ exports.getQuizzesData = async (userId) => {
             return {
                 quizTitle: uniqueQuizTitle,
                 completionLevel: getCompletionLevel(uniqueQuizTitle),
-                isCompleted: getCompletionLevel(uniqueQuizTitle) < 1 ? false : true,
+                isCompleted: getCompletionLevel(uniqueQuizTitle) === 1 ? true : false,
                 questions: getArrayOfQuestionsByQuizType(uniqueQuizTitle)
             }
         })
@@ -101,7 +107,8 @@ exports.getQuizResult = async (userId, quizTitle) => {
             let feeThiScore = feeThiAnswers.reduce((acc, cur) => acc + cur.answer, 0);
 
             if (extIntScore === 0 || intSenScore === 0 || judPerScore === 0 || feeThiScore === 0) {
-                console.error("error - one the user spectrum scores = 0. Scores are:", extIntScore, intSenScore, feeThiScore, judPerScore);
+                console.error("error - one of the user spectrum scores = 0 and quiz is probably incomplete. Scores are:", extIntScore, intSenScore, feeThiScore, judPerScore);
+                return "test incomplete"
             }
 
             let arr = [extIntScore > 0 ? 'E' : 'I', intSenScore > 0 ? 'N' : 'S', feeThiScore > 0 ? 'T' : 'F', judPerScore > 0 ? 'J' : 'P']
@@ -113,21 +120,23 @@ exports.getQuizResult = async (userId, quizTitle) => {
             let mbtiRow = mbtiDataRows.find(row => {
                 return row.mbtiType === personalityType
             });
-            if (!mbtiRow[item]) console.error("Error - Personality type has no match in database.", "type: ", personalityType, "item:", item);
+
+            if (!mbtiRow) {
+                return "incomplete quiz results"
+            };
             return mbtiRow[item]
         }
 
-
+        let calculatedPersonalityType = calcMbtiShortPersonalityType(quizAnswersData.rows)
 
         return {
             question: quizTitle,
-            mbtiType: calcMbtiShortPersonalityType(quizAnswersData.rows),
-            about: getMbtiItem(calcMbtiShortPersonalityType(quizAnswersData.rows), "about", mbtiData.rows),
-            relationshipDescrip1: getMbtiItem(calcMbtiShortPersonalityType(quizAnswersData.rows), "relationshipDescrip1", mbtiData.rows),
-            relationshipDescrip2: getMbtiItem(calcMbtiShortPersonalityType(quizAnswersData.rows), "relationshipDescrip2", mbtiData.rows),
-            moreInfoLink: getMbtiItem(calcMbtiShortPersonalityType(quizAnswersData.rows), "moreInfoLink", mbtiData.rows)
+            mbtiType: calculatedPersonalityType,
+            about: getMbtiItem(calculatedPersonalityType, "about", mbtiData.rows),
+            relationshipDescrip1: getMbtiItem(calculatedPersonalityType, "relationshipDescrip1", mbtiData.rows),
+            relationshipDescrip2: getMbtiItem(calculatedPersonalityType, "relationshipDescrip2", mbtiData.rows),
+            moreInfoLink: getMbtiItem(calculatedPersonalityType, "moreInfoLink", mbtiData.rows)
         }
-
     } catch (error) {
         console.error(error);
         throw error;
@@ -136,15 +145,17 @@ exports.getQuizResult = async (userId, quizTitle) => {
 }
 
 exports.getQuizzesMatchResults = async (userId, candidateId, quizType) => {
-    await validate.checkUserIdType(userId);     await validate.checkUserIdType(candidateId); 
-    await validate.checkUserExists(userId);     await validate.checkUserExists(candidateId); 
-    await validate.isQuizType(quizType);
+    validate.checkUserIdType(userId); validate.checkUserIdType(candidateId);
+    await validate.checkUserExists(userId); await validate.checkUserExists(candidateId);
+    validate.isQuizType(quizType);
 
     try {
         let userQuizResults = await exports.getQuizResult(userId, quizType);
         let candidateQuizResults = await exports.getQuizResult(candidateId, quizType);
 
         let compatabilityData = await db.query(`SELECT * FROM "mbtiCompatabilitylevel" WHERE "typeA" = $1 AND "typeB" = $2`, [userQuizResults.mbtiType, candidateQuizResults.mbtiType])
+
+        if (!compatabilityData.rows[0]) return { candidatePersonalityType: "quiz is incomplete", compatabilityScore: "quiz is incomplete" };
         let compatabilityScore = compatabilityData.rows[0].compatabilityLevel;
 
         let compatabilityEquivalent = {
@@ -166,7 +177,7 @@ exports.getQuizzesMatchResults = async (userId, candidateId, quizType) => {
 }
 
 exports.setAnswer = async (userId, questionId, userAnswer) => {
-    await validate.checkUserIdType(userId);     await validate.checkUserExists(userId);  
+    await validate.checkUserIdType(userId); await validate.checkUserExists(userId);
     try {
         db.query(`INSERT INTO "userAnswers" ("userId", "quizQuestionsId", answer) VALUES ($1,$2,$3 )`, [userId, questionId, userAnswer]);
         return { message: "useranswers updated successfully" }
