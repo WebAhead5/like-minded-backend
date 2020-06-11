@@ -12,6 +12,7 @@
     "testDB-relationships": "cross-env NODE_ENV=test tape src/tests/db-tests/db-test-relationships.js | tap-spec",
     "testDB-userProfile": "cross-env NODE_ENV=test tape src/tests/db-tests/db-test-userProfile.js | tap-spec",
     "testDB-quizzes": "cross-env NODE_ENV=test tape src/tests/db-tests/db-test-quizzes.js | tap-spec",
+    "testDB-matches": "cross-env NODE_ENV=test tape src/tests/db-tests/db-test-matches.js | tap-spec",
     "testRoutes": "cross-env NODE_ENV=test tape src/tests/router-tests/router-test.js | tap-spec",
     "test-messagesRoutes": "cross-env NODE_ENV=test tape src/tests/router-tests/messages-router-tests.js | tap-spec",
     "test-userProfileRoutes": "cross-env NODE_ENV=test tape src/tests/router-tests/userProfile-router-tests.js | tap-spec",

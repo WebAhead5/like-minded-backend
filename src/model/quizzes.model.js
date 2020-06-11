@@ -3,9 +3,8 @@ const validate = require('../tools/modelsInputValidators')
 
 // get an object containing all the questions and answers for each quiz title. Also get the completion level for each quiz by the user.
 exports.getQuizzesData = async (userId) => {
-    validate.checkUserIdType(userId);
+    validate.checkUserIdType(userId); await validate.checkUserExists(userId);
     try {
-
         // get an array of unique quiz titles 
         let quizQuestionsData = await db.query(`SELECT * FROM "quizQuestions"`)
         arrayOfQuizTitles = [];
@@ -66,7 +65,7 @@ exports.getQuizzesData = async (userId) => {
 }
 
 exports.getQuizResult = async (userId, quizTitle) => {
-    await validate.checkUserIdType(userId); await validate.isQuizType(quizTitle);
+    await validate.checkUserIdType(userId); await validate.checkUserExists(userId); await validate.isQuizType(quizTitle);
     try {
         let quizAnswersData = await db.query(`SELECT * FROM "quizAnswers" WHERE "userId" = $1`, [userId])
         let quizQuestionsData = await db.query(`SELECT * FROM "quizQuestions"`)
@@ -137,6 +136,10 @@ exports.getQuizResult = async (userId, quizTitle) => {
 }
 
 exports.getQuizzesMatchResults = async (userId, candidateId, quizType) => {
+    await validate.checkUserIdType(userId);     await validate.checkUserIdType(candidateId); 
+    await validate.checkUserExists(userId);     await validate.checkUserExists(candidateId); 
+    await validate.isQuizType(quizType);
+
     try {
         let userQuizResults = await exports.getQuizResult(userId, quizType);
         let candidateQuizResults = await exports.getQuizResult(candidateId, quizType);
@@ -163,6 +166,7 @@ exports.getQuizzesMatchResults = async (userId, candidateId, quizType) => {
 }
 
 exports.setAnswer = async (userId, questionId, userAnswer) => {
+    await validate.checkUserIdType(userId);     await validate.checkUserExists(userId);  
     try {
         db.query(`INSERT INTO "userAnswers" ("userId", "quizQuestionsId", answer) VALUES ($1,$2,$3 )`, [userId, questionId, userAnswer]);
         return { message: "useranswers updated successfully" }
