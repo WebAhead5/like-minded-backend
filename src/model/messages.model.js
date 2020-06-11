@@ -75,12 +75,12 @@ exports.getAllChatsWith = async (userId) => {
 
     //get chats
     for (let match of allMatchesWithUser) {
-       let lastMessage = await db.query(`SELECT * FROM messages WHERE ("senderUserId" = $1 AND "recipUserId" = $2) OR ("senderUserId" = $2 AND "recipUserId" = $1) ORDER by "timeAndDate" DESC LIMIT 1 `, [userId, match.profile.userid])
+       let lastMessage =await exports.getChat(userId,match.profile.userid,{count:1})
         array.push(
             {
                 profile: match.profile,
-                lastMessage: lastMessage.rowCount? lastMessage.rows[0].message : null,
-                lastMessageData: await exports.getChat(userId,match.profile.userid,{count:1})
+                lastMessage:  lastMessage.length ? lastMessage[0].message: null ,
+                lastMessageData: lastMessage.length? lastMessage[0]: null
             }
         )
     }
