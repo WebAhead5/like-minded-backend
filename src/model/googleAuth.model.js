@@ -27,10 +27,11 @@ exports.login = async (googleProfile)=> {
             return userId;
 
         } catch (e) {
-            await dbConnection.query(`delete
-                                      from auth
-                                      where "googleId" = $1`, [googleProfile.id]);
-            throw e;
+           let id =  await dbConnection.query(`delete from auth where "googleId" = $1 returning id`, [googleProfile.id]);
+           id = id.rowCount? id.rows[0]: -1;
+            await dbConnection.query(`delete from userprofile where "userid" = $1 `, [id]);
+            await dbConnection.query(`delete from usersettings where "userid" = $1 `, [id]);
+           throw e;
         }
 
     }
