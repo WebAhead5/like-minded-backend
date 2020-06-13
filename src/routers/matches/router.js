@@ -7,11 +7,10 @@ router.get('/', async (req,res)=>{
     let userId = res.userId;
     if (process.env.NODE_ENV !== 'production')
     userId = userId || req.body.userId;
-    let {count, offset} = req.params;
-    console.log("/matches route params:",count,offset);
-    
+    let {count=undefined, offset=undefined} = req.query;
+
     try {
-        let getPotentialMatches = await matchesModel.getPotentialMatches(userId) //need to add options
+        let getPotentialMatches = await matchesModel.getPotentialMatches(userId,{count,offset}) //need to add options
         serverResponse.sendData(res, { data: getPotentialMatches })
     } catch (error) {
         serverResponse.sendError(res, {message: error.message })
