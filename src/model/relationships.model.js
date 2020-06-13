@@ -129,7 +129,7 @@ exports.getRelationshipsWhereCandidateSelected = async (status, userId) => {
 exports.setRelationshipStatus = async (userId, candidateId, status) => {
 
     validators.checkUserIdType(userId)
-    validators.checkUserIdType(userId)
+    validators.checkUserIdType(candidateId)
     await validators.checkUserExists(userId)
     await validators.checkUserExists(candidateId)
     await validators.validateObjectFieldTypes({relationshipStatus: status})
