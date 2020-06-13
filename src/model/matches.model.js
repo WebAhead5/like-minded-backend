@@ -3,9 +3,21 @@ const quizzesModel = require("./quizzes.model")
 const validators = require("../tools/modelsInputValidators")
 
 //  get potential matches with the userId
-exports.getPotentialMatches = async (userId, options = {}) => {
+exports.getPotentialMatches = async (userId, {count, offset}) => {
     validators.checkUserIdType(userId);
     await validators.checkUserExists(userId);
+    let countStr = ""
+    let offsetStr = ""
+    if(count!== undefined) {
+        if(Number.isNaN(count))
+            throw new Error("count mist be a number")
+        countStr = "limit " + count.toString();
+    }
+    if(offset !== undefined) {
+        if(Number.isNaN(count))
+            throw new Error("count mist be a number")
+        offsetStr = "offset " + count;
+    }
 
     let potentialMatches = await db.query(`
         select * 
@@ -19,8 +31,8 @@ exports.getPotentialMatches = async (userId, options = {}) => {
                   and userid != $1)
              
                union distinct
-               ( SELECT userid from userprofile  left join userrelationship on null where userid != $1));;
-    `, [userId])
+               ( SELECT userid from userprofile  left join userrelationship on null where userid != $1))
+   ${countStr} ${offsetStr} ; `, [userId])
 
 
     let getQuizResults = async (userId, candidateId, quizType) => await quizzesModel.getQuizzesMatchResults(userId, candidateId, quizType)
