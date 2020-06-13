@@ -31,7 +31,6 @@ VALUES
 (5, 8, 'like', 'none'),
 (5, 9, 'none', 'block'),
 (5, 10, 'none', 'none'),
-(6, 1, 'none', 'none'),
 (6, 2, 'none', 'block'),
 (6, 3, 'block', 'none'),
 (6, 4, 'none', 'like'),
