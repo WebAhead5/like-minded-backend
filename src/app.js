@@ -13,6 +13,7 @@ const cookieParser = require("cookie-parser")
 const favicon  = require("serve-favicon")
 const path = require('path')
 const helmet = require("helmet")
+const cors = require('cors');
 const {requireUserToLogin} = require("./routers/auth/middleware/requireUserToLogin")
 
 //require routers
@@ -34,6 +35,7 @@ app.use((req,res,next)=>{
 //use middleware
 if(!process.env.COOKIE_SECRET)
     throw new Error("cookie secret must be provided");
+app.use(cors())
 app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(express.json({limit:'50mb' }))
 app.use(helmet())
